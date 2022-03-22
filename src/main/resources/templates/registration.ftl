@@ -6,17 +6,60 @@
     <meta charset="UTF-8">
     <title>registration page</title>
 </head>
+<script type="text/javascript" src="/static/jquery.js"></script>
 <body>
     <div>
         <fieldset>
             <legend>Введите данные</legend>
-            <form name="person" action="save" method="POST">
-                <@m.formInput id="t1" name="name" label="Имя     "/> <br/>
-                <@m.formInput id="t2" name="sign" label="Логин   "/> <br/>
-                <@m.formInput id="t3" name="pass" label="Пароль  "/> <br/>
-                <@m.formInput id="t4" name="mail" label="Эл.почта"/> <br/>
-                <input type="submit" value="Зарегистрироваться" />
+            <form id="reg-form">
+                <label>
+                    Логин
+                    <input name="login" type="text" required="required"/>
+                </label>
+                <br/><br/>
+                <label>
+                    Пароль
+                    <input name="pass" type="password" required="required"/>
+                </label>
+                <br/><br/>
+                <label>
+                    Имя
+                    <input name="sign" type="text" required="required"/>
+                </label>
+                <br/><br/>
+                <label>
+                    E-mail
+                    <input name="mail" type="email" required="required"/>
+                </label>
+                <br/><br/>
+                <button type="button" onclick="regClick()">Зарегистрироваться</button>
             </form>
+
+            <script>
+
+                function regClick() {
+                    let formData = Object.fromEntries(new FormData($('#reg-form')[0]).entries())
+                    $.ajax({
+                        url: '/api/registration/registration',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        cache: false,
+                        async: false,
+                        data: JSON.stringify(formData),
+                        success: function(resp) {
+                            console.log(resp)
+                            if (resp.success) {
+                                location.href = 'profile'
+                            } else {
+                                alert(resp.message)
+                            }
+                        }
+                    });
+                }
+
+            </script>
+
         </fieldset>
     </div>
 </body>
