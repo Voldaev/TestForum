@@ -4,6 +4,7 @@ import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +18,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public void save(UserRegDTO user) {
         UserEntity entity = new UserEntity();
         entity.setName(user.getName());
         entity.setSign(user.getSign());
-        entity.setPass(user.getPass());
+        entity.setPass(passwordEncoder.encode(user.getPass()));
         entity.setMail(user.getMail());
         entity.setStatus(0);
         userRepository.save(entity);

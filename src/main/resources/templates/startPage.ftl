@@ -5,7 +5,7 @@
     <title>Starting page</title>
 </head>
 <body>
-<h2 >Hello ${name}!</h2>
+<h2 >Hello!</h2>
 <br>
 <br>
 <a href="/login">войти в существующую учетную запись</a>

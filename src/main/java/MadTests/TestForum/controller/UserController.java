@@ -16,9 +16,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/hello")
-    public String hello(Model model,
-                        @RequestParam(value="name", required=false, defaultValue="whoever u are") String name) {
-        model.addAttribute("name", name);
+    public String hello() {
         return "startPage";
     }
 
