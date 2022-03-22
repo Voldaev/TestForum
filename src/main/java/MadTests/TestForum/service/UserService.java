@@ -1,5 +1,6 @@
 package MadTests.TestForum.service;
 
+import MadTests.TestForum.dto.LoginDTO;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
@@ -43,4 +44,22 @@ public class UserService {
         return res;
     }
 
+    public boolean check(LoginDTO l) {
+        return passwordEncoder.matches(userRepository.findBySign(l.getSign()).getPass(), l.getPass());
+    }
+
+
+    public Integer getId(LoginDTO l) {
+        return Math.toIntExact(userRepository.findBySign(l.getSign()).getId());
+    }
+
+    public UserRegDTO test(String sign) {
+        UserEntity entity = userRepository.findBySign(sign);
+        return UserRegDTO.builder()
+                .name(entity.getName())
+                .sign(entity.getSign())
+                .pass(entity.getPass())
+                .mail(entity.getMail())
+                .build();
+    }
 }

@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(PROTECTED_URLS_2).authenticated()
                 .and().formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/security/login")
+                .loginProcessingUrl("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .permitAll();
