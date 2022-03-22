@@ -3,6 +3,7 @@ package MadTests.TestForum.service;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,17 +14,14 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public void save(UserRegDTO user) {
         UserEntity entity = new UserEntity();
         entity.setName(user.getName());
         entity.setSign(user.getSign());
-        entity.setPass(user.getPass());//fixme тут (или еще на контроллере) должен бы быть шифр
+        entity.setPass(user.getPass());
         entity.setMail(user.getMail());
         entity.setStatus(0);
         userRepository.save(entity);
