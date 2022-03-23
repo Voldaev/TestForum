@@ -3,9 +3,11 @@ package MadTests.TestForum.service;
 import MadTests.TestForum.dto.LoginDTO;
 import MadTests.TestForum.dto.MessageDto;
 import MadTests.TestForum.dto.UserRegDTO;
+import MadTests.TestForum.event.UserRegisteredPublished;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public MessageDto save(UserRegDTO user) {
         UserEntity entity = userRepository.findByEmail(user.getMail());
@@ -52,6 +57,7 @@ public class UserService {
         entity.setStatus(0);
         userRepository.save(entity);
 
+        eventPublisher.publishEvent(new UserRegisteredPublished(user.getSign(), user.getMail()));
         return message(true, "успех");
     }
 
