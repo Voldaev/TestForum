@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-//@RequestMapping(value = "/users")
 public class UserController {
 
 
@@ -49,7 +48,12 @@ public class UserController {
         return "main";
     }
 
-    public Long getSessionUserId() {
+    @GetMapping("/main/confirmation")
+    public String confirm() {
+        return "confirmation";
+    }
+
+    private Long getSessionUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return null;

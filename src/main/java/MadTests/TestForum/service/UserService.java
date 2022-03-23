@@ -52,10 +52,7 @@ public class UserService {
         entity.setStatus(0);
         userRepository.save(entity);
 
-        return MessageDto.builder()
-                .success(true)
-                .message("Пользователь создан. Можете заходить на сайт")
-                .build();
+        return message(true, "успех");
     }
 
     public MessageDto check(LoginDTO l) {
@@ -76,6 +73,7 @@ public class UserService {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }
+
     private MessageDto message(boolean b, String text) {
         return MessageDto.builder()
                 .success(b)
