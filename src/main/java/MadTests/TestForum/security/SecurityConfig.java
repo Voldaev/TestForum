@@ -17,10 +17,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher FREE_URLS_1 = new OrRequestMatcher(
-            new AntPathRequestMatcher("/**"),
-            new AntPathRequestMatcher("/registration/**"));
+            new AntPathRequestMatcher("/hello"),
+            new AntPathRequestMatcher("/registration/**"),
+            new AntPathRequestMatcher("/login/**"));
     private static final RequestMatcher PROTECTED_URLS_2 = new OrRequestMatcher(
-            new AntPathRequestMatcher("/users/**")
+            new AntPathRequestMatcher("/main/**")
     );
 
     @Override

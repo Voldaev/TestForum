@@ -1,5 +1,3 @@
-<#import "macro.ftl" as m/>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,18 +11,18 @@
             <legend>Введите данные</legend>
             <form id="reg-form">
                 <label>
+                    Имя
+                    <input name="name" type="text" required="required"/>
+                </label>
+                <br/><br/>
+                <label>
                     Логин
-                    <input name="login" type="text" required="required"/>
+                    <input name="sign" type="text" required="required"/>
                 </label>
                 <br/><br/>
                 <label>
                     Пароль
                     <input name="pass" type="password" required="required"/>
-                </label>
-                <br/><br/>
-                <label>
-                    Имя
-                    <input name="sign" type="text" required="required"/>
                 </label>
                 <br/><br/>
                 <label>
@@ -50,7 +48,8 @@
                         success: function(resp) {
                             console.log(resp)
                             if (resp.success) {
-                                location.href = 'profile'
+                                alert('регистрация прошла успешно')
+                                location.href = 'hello'
                             } else {
                                 alert(resp.message)
                             }

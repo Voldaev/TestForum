@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class UserRegDTO {
-    private String login;
+    private String name;
     private String sign;
     private String pass;
     private String mail;

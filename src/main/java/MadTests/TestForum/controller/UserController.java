@@ -33,57 +33,23 @@ public class UserController {
         return "registration";
     }
 
-//    @RequestMapping(value = "/save", method = RequestMethod.POST)
-//    public String save(Model model, @ModelAttribute("person") UserRegDTO user) {
-//
-//        userService.save(user);
-//        if (true) //fixme проверки всякие на корректность данных
-//        {
-//            return "reg_success";
-//        } else {
-//            return "reg_fail";
-//        }
-//    }
     @GetMapping("/login")
     public String login() {
         return "login_page";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(Model model, @ModelAttribute("person") UserRegDTO user) {
-
-        userService.save(user);
-        if (true) //fixme проверки всякие на корректность данных
-        {
-            return "reg_success";
-        } else {
-            return "reg_fail";
+    @GetMapping("/main")
+    public String hello(Model model) {
+        model.addAttribute("name", userService.getName(getSessionUserId()));
+        if (userService.getStatus(getSessionUserId())>0) {
+            model.addAttribute("status", "учетная запись подтверждена"); }
+        else {
+            model.addAttribute("status","Внимание! email не подтвержден!");
         }
+        return "main";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, @ModelAttribute("login_pass") LoginDTO l) {
-
-        if (userService.check(l))
-        {
-            setSessionUserId(userService.getId(l));
-            return "confirmation"; //fixme какая-нибудь интересная страница для авторизованных пользователей
-        } else {
-            return "wrong_login_data";
-        }
-    }
-
-    public void setSessionUserId(Integer userId) {
-        if (userId == null) {
-            SecurityContextHolder.getContext().setAuthentication(null);
-        } else {
-            List<GrantedAuthority> roles = new ArrayList<>(0);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId,null, roles);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-    }
-
-    public Integer getSessionUserId() {
+    public Long getSessionUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return null;
@@ -91,8 +57,8 @@ public class UserController {
         if (authentication instanceof UsernamePasswordAuthenticationToken) {
             UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
             Object o = token.getPrincipal();
-            if (o instanceof Integer) {
-                return (Integer) o;
+            if (o instanceof Long) {
+                return (Long) o;
             }
         }
         return null;
