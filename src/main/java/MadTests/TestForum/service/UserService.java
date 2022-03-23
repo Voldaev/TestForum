@@ -26,7 +26,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // сохраняет пользователя в базу
     public MessageDto save(UserRegDTO user) {
         UserEntity entity = userRepository.findByEmail(user.getMail());
         if (entity != null) {
@@ -49,19 +48,6 @@ public class UserService {
                 .build();
     }
 
-    //fixme debug method достает всех из базы
-    public List<UserRegDTO> show() {
-        List<UserRegDTO> res = new ArrayList<>();
-        userRepository.findAll().forEach(userEntity -> res.add(UserRegDTO.builder()
-                        .name(userEntity.getName())
-                        .sign(userEntity.getSign())
-                        .pass(userEntity.getPass())
-                        .mail(userEntity.getMail())
-                        .build()
-        ));
-        return res;
-    }
-    // проверяет совпадение логина/пароля с базой
     public MessageDto check(LoginDTO l) {
         if (passwordEncoder.matches(l.getPass(), userRepository.findBySign(l.getSign()).getPass())) {
             setSessionUserId(userRepository.findBySign(l.getSign()).getId());
@@ -81,7 +67,6 @@ public class UserService {
         }
     }
 
-    // достает id пользователя по логину debug
     public String getName(Long id) {
         return userRepository.getById(id).getName();
     }
@@ -90,7 +75,8 @@ public class UserService {
         return userRepository.getById(id).getStatus();
     }
 
-    // Достает пользователя по логину debug
+    //----------------------------------------- DEBUG
+    // достает пользователя по логину
     public UserRegDTO test(String sign) {
         UserEntity entity = userRepository.findBySign(sign);
         return UserRegDTO.builder()
@@ -99,6 +85,19 @@ public class UserService {
                 .pass(entity.getPass())
                 .mail(entity.getMail())
                 .build();
+    }
+
+    // достает всех из базы
+    public List<UserRegDTO> show() {
+        List<UserRegDTO> res = new ArrayList<>();
+        userRepository.findAll().forEach(userEntity -> res.add(UserRegDTO.builder()
+                .name(userEntity.getName())
+                .sign(userEntity.getSign())
+                .pass(userEntity.getPass())
+                .mail(userEntity.getMail())
+                .build()
+        ));
+        return res;
     }
 
 }
