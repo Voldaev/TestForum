@@ -1,4 +1,4 @@
-package MadTests.TestForum.controller;
+package MadTests.TestForum.controller.rest;
 
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;

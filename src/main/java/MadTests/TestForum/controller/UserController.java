@@ -33,6 +33,17 @@ public class UserController {
         return "registration";
     }
 
+//    @RequestMapping(value = "/save", method = RequestMethod.POST)
+//    public String save(Model model, @ModelAttribute("person") UserRegDTO user) {
+//
+//        userService.save(user);
+//        if (true) //fixme проверки всякие на корректность данных
+//        {
+//            return "reg_success";
+//        } else {
+//            return "reg_fail";
+//        }
+//    }
     @GetMapping("/login")
     public String login() {
         return "login_page";
