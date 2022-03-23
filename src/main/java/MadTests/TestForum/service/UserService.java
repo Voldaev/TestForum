@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -29,15 +31,23 @@ public class UserService {
     public MessageDto save(UserRegDTO user) {
         UserEntity entity = userRepository.findByEmail(user.getMail());
         if (entity != null) {
-            return MessageDto.builder()
-                    .success(false)
-                    .message("Электронная почта используется другим пользователем")
-                    .build();
+            return message(false, "Электронная почта уже занята");
         }
         entity = new UserEntity();
         entity.setName(user.getName());
+        if (userRepository.findBySign(user.getSign())!=null) {
+            return message(false, "Логин уже занят, попробуйте другой");
+        }
         entity.setSign(user.getSign());
+        if (user.getPass().length()<6) {
+            return message(false, "Слишком короткий пароль");
+        }
         entity.setPass(passwordEncoder.encode(user.getPass()));
+        Pattern pattern = Pattern.compile("([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+@([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+[\\\\.]{1}[a-z]{2,4}");
+        Matcher matcher = pattern.matcher(user.getMail());
+        if (!matcher.matches()) {
+            return message(false, "некорректный email");
+        }
         entity.setMail(user.getMail());
         entity.setStatus(0);
         userRepository.save(entity);
@@ -57,7 +67,7 @@ public class UserService {
         }
     }
 
-    public void setSessionUserId(Long userId) {
+    private void setSessionUserId(Long userId) {
         if (userId == null) {
             SecurityContextHolder.getContext().setAuthentication(null);
         } else {
@@ -65,6 +75,12 @@ public class UserService {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId,null, roles);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+    }
+    private MessageDto message(boolean b, String text) {
+        return MessageDto.builder()
+                .success(b)
+                .message(text)
+                .build();
     }
 
     public String getName(Long id) {
