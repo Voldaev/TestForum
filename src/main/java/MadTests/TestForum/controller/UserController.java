@@ -1,6 +1,7 @@
 package MadTests.TestForum.controller;
 
 import MadTests.TestForum.dto.LoginDTO;
+import MadTests.TestForum.dto.UserEditRegDTO;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,10 @@ public class UserController {
 
     @GetMapping("/main/profile")
     public String profile(Model model) {
-
+        UserEditRegDTO userEditRegDTO = userService.getProfile(getSessionUserId());
+        model.addAttribute("username", userEditRegDTO.getName());
+        model.addAttribute("userlogin",userEditRegDTO.getSign());
+        model.addAttribute("usermail", userEditRegDTO.getMail());
         return "profile";
     }
 

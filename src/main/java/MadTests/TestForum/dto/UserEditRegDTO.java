@@ -9,7 +9,8 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @Builder
-public class MessageDto {
-    private boolean success;
-    private String message;
+public class UserEditRegDTO {
+    private String name;
+    private String sign;
+    private String mail;
 }

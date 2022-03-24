@@ -1,8 +1,6 @@
 package MadTests.TestForum.service;
 
-import MadTests.TestForum.dto.LoginDTO;
-import MadTests.TestForum.dto.MessageDto;
-import MadTests.TestForum.dto.UserRegDTO;
+import MadTests.TestForum.dto.*;
 import MadTests.TestForum.event.UserRegisteredPublished;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
@@ -14,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class UserService {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    public MessageDto save(UserRegDTO user) {
+    public MessageDTO save(UserRegDTO user) {
         UserEntity entity = userRepository.findByEmail(user.getMail());
         if (entity != null) {
             return message(false, "Электронная почта уже занята");
@@ -71,12 +70,12 @@ public class UserService {
         return message(true, "успех");
     }
 
-    public MessageDto check(LoginDTO l) {
+    public MessageDTO check(LoginDTO l) {
         if (passwordEncoder.matches(l.getPass(), userRepository.findBySign(l.getSign()).getPass())) {
             setSessionUserId(userRepository.findBySign(l.getSign()).getId());
-            return MessageDto.builder().success(true).message("подтверждено").build();
+            return MessageDTO.builder().success(true).message("подтверждено").build();
         } else {
-            return MessageDto.builder().success(false).message("данные не верны").build();
+            return MessageDTO.builder().success(false).message("данные не верны").build();
         }
     }
 
@@ -90,8 +89,8 @@ public class UserService {
         }
     }
 
-    private MessageDto message(boolean b, String text) {
-        return MessageDto.builder()
+    private MessageDTO message(boolean b, String text) {
+        return MessageDTO.builder()
                 .success(b)
                 .message(text)
                 .build();
@@ -103,6 +102,70 @@ public class UserService {
 
     public Integer getStatus(Long id) {
         return userRepository.getById(id).getStatus();
+    }
+
+    public boolean active(String uuid) {
+        UserEntity entity = userRepository.findByUuid(uuid);
+        if (entity!=null) {
+            entity.setStatus(1);
+            userRepository.save(entity);
+            return true;
+        }
+        return false;
+    }
+
+    public MessageDTO edit(Long sessionUserId, UserEditRegDTO userEditRegDTO) {
+        UserEntity entity = userRepository.getById(sessionUserId);
+        if (userEditRegDTO.getName().length()<2) {
+            return message(false, "Некорректное имя");
+        }
+        entity.setName(userEditRegDTO.getName());
+
+        if ((!entity.getSign().equals(userEditRegDTO.getSign())) && userRepository.findBySign(userEditRegDTO.getSign())!=null) {
+            return message(false, "Логин уже занят, попробуйте другой");
+        }
+        if (userEditRegDTO.getName().length()<3) {
+            return message(false, "Слишком короткий логин");
+        }
+        entity.setSign(userEditRegDTO.getSign());
+
+        if ((!entity.getMail().equals(userEditRegDTO.getMail())) && userRepository.findByEmail(userEditRegDTO.getMail())!=null)
+        {
+            return message(false, "Электронная почта уже занята");
+        }
+        Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
+        Matcher matcher = pattern.matcher(userEditRegDTO.getMail());
+        if (!matcher.matches()) {
+            return message(false, "некорректный email");
+        }
+        if (!entity.getMail().equals(userEditRegDTO.getMail())) {
+            eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
+        }
+        entity.setMail(userEditRegDTO.getMail());
+        userRepository.save(entity);
+        return message(true, "успех");
+    }
+
+    public MessageDTO edit_pass(Long sessionUserId, UserEditPassDTO userEditPassDTO) {
+        UserEntity entity = userRepository.getById(sessionUserId);
+        if (!passwordEncoder.matches(userEditPassDTO.getOldPass(),entity.getPass())) {
+            return message(false, "старый пароль не совпадает");
+        }
+        if (passwordEncoder.matches(userEditPassDTO.getNewPass(),entity.getPass())) {
+            return message(false, "старый и новый пароли не должны совпадать");
+        }
+        if (userEditPassDTO.getNewPass().length()<6) {
+            return message(false, "новый пароль слишком короткий");
+        }
+        entity.setPass(passwordEncoder.encode(userEditPassDTO.getNewPass()));
+        userRepository.save(entity);
+        return message(true, "успех");
+    }
+
+
+    public UserEditRegDTO getProfile(Long sessionUserId) {
+        UserEntity entity = userRepository.getById(sessionUserId);
+        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).build();
     }
 
     //----------------------------------------- DEBUG
@@ -130,13 +193,4 @@ public class UserService {
         return res;
     }
 
-    public boolean active(String uuid) {
-        UserEntity entity = userRepository.findByUuid(uuid);
-        if (entity!=null) {
-            entity.setStatus(1);
-            userRepository.save(entity);
-            return true;
-        }
-        return false;
-    }
 }
