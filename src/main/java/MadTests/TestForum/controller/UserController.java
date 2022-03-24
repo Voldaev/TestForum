@@ -32,6 +32,16 @@ public class UserController {
         return "registration";
     }
 
+    @GetMapping("/confirmation/{uuid}")
+    public String confirm(Model model, @PathVariable String uuid) {
+        if (userService.active(uuid)) {
+            model.addAttribute("message","электронная почта подтверждена!");
+        } else {
+            model.addAttribute("message", "пользователь не найден!");
+        }
+        return "confirmation";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login_page";
@@ -46,11 +56,6 @@ public class UserController {
             model.addAttribute("status","Внимание! email не подтвержден!");
         }
         return "main";
-    }
-
-    @GetMapping("/main/confirmation")
-    public String confirm() {
-        return "confirmation";
     }
 
     private Long getSessionUserId() {

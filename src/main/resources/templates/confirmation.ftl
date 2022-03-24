@@ -5,6 +5,8 @@
     <title>confirmation page</title>
 </head>
 <body>
-<h2 >подтвердите электронную почту</h2>
+<h2 >${message}</h2>
+<br>
+<a href="/main">на главную</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package MadTests.TestForum.security;
+package MadTests.TestForum.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

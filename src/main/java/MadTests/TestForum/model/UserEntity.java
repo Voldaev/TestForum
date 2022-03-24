@@ -33,4 +33,7 @@ public class UserEntity {
 
     @Column(name = "status")
     private Integer status; // fixme как поведёт себя enum с базой?
+
+    @Column(name = "uuid")
+    private String uuid;
 }

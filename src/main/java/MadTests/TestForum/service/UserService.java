@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,26 +39,35 @@ public class UserService {
         if (entity != null) {
             return message(false, "Электронная почта уже занята");
         }
+
         entity = new UserEntity();
+        if (user.getName().length()<2) {
+            return message(false, "Некорректное имя");
+        }
         entity.setName(user.getName());
+
         if (userRepository.findBySign(user.getSign())!=null) {
             return message(false, "Логин уже занят, попробуйте другой");
+        }
+        if (user.getName().length()<3) {
+            return message(false, "Слишком короткий логин");
         }
         entity.setSign(user.getSign());
         if (user.getPass().length()<6) {
             return message(false, "Слишком короткий пароль");
         }
         entity.setPass(passwordEncoder.encode(user.getPass()));
-        Pattern pattern = Pattern.compile("([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+@([A-Za-z0-9]{1,}[\\\\-]{0,1}[A-Za-z0-9]{1,}[\\\\.]{0,1}[A-Za-z0-9]{1,})+[\\\\.]{1}[a-z]{2,4}");
+        Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
         Matcher matcher = pattern.matcher(user.getMail());
         if (!matcher.matches()) {
             return message(false, "некорректный email");
         }
         entity.setMail(user.getMail());
         entity.setStatus(0);
+        entity.setUuid(UUID.randomUUID().toString());
         userRepository.save(entity);
 
-        eventPublisher.publishEvent(new UserRegisteredPublished(user.getSign(), user.getMail()));
+        eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
         return message(true, "успех");
     }
 
@@ -120,4 +130,13 @@ public class UserService {
         return res;
     }
 
+    public boolean active(String uuid) {
+        UserEntity entity = userRepository.findByUuid(uuid);
+        if (entity!=null) {
+            entity.setStatus(1);
+            userRepository.save(entity);
+            return true;
+        }
+        return false;
+    }
 }

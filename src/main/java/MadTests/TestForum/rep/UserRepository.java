@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity u where lower(u.mail) = trim(lower(:mail))")
     UserEntity findByEmail(String mail);
+
+    UserEntity findByUuid(String uuid);
 }
