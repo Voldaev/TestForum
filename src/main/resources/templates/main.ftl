@@ -5,9 +5,12 @@
     <title>main</title>
 </head>
 <body>
-<h1 >Добро пожаловать, ${name}!</h1>
-
-<#if status??><h2 >${status}</h2><#else></#if>
 <h3 >страница только для авторизованных пользователей</h3>
+<br/>>
+<h1 >Добро пожаловать, ${name}!</h1>
+<a href="/main/profile">редактировать профиль</a>
+<#if status??><h2 >${status}</h2><#else></#if>
+
+
 </body>
 </html>

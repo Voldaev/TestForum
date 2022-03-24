@@ -56,6 +56,13 @@ public class UserController {
         return "main";
     }
 
+    @GetMapping("/main/profile")
+    public String profile(Model model) {
+
+        return "profile";
+    }
+
+
     private Long getSessionUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
