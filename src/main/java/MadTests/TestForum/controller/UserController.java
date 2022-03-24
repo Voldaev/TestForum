@@ -50,9 +50,7 @@ public class UserController {
     @GetMapping("/main")
     public String hello(Model model) {
         model.addAttribute("name", userService.getName(getSessionUserId()));
-        if (userService.getStatus(getSessionUserId())>0) {
-            model.addAttribute("status", "учетная запись подтверждена"); }
-        else {
+        if (userService.getStatus(getSessionUserId())<1) {
             model.addAttribute("status","Внимание! email не подтвержден!");
         }
         return "main";
