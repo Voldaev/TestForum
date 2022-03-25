@@ -192,5 +192,15 @@ public class UserService {
         ));
         return res;
     }
-
+    // добавляет тестового пользователя
+    public void testUser() {
+        UserEntity entity = new UserEntity();
+        entity.setName("asdf");
+        entity.setSign("ASDF");
+        entity.setPass(passwordEncoder.encode("ASDASD"));
+        entity.setMail("lions.tech.email@mail.ru");
+        entity.setUuid(UUID.randomUUID().toString());
+        entity.setStatus(1);
+        userRepository.save(entity);
+    }
 }

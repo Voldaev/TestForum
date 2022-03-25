@@ -9,6 +9,38 @@
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
+    <div role="radiogroup">
+        <input type="radio" name="action" value="up" checked> Просмотр данных профиля
+        <br/>
+        <input type="radio" name="action" value="down"> Изменение данных профиля
+        <br/>
+    </div>
+            <script>
+                    $('input[name="action"]').on('change', function() {
+
+                    let test = $('input[name="action"]:checked').val();
+
+                    if (test == 'up') {
+                        $(".edit").hide();
+                        $(".show").show();
+                    } else {
+                        $(".edit").show();
+                        $(".show").hide();
+                    }
+                    }).change();
+            </script>
+    <div class="show">
+        <p> имя пользователя</p>
+        <p>${username}</p>
+        <br/>
+        <p> логин пользователя</p>
+        <p>${userlogin}</p>
+        <br/>
+        <p> email пользователя</p>
+        <p>${usermail}</p>
+        <br/>
+    </div>
+   <div class="edit" hidden>
     <fieldset>
         <legend>Данные профиля</legend>
         <form id="edit-form">
@@ -97,6 +129,7 @@
 
             </script>
     </fieldset>
+   </div>
 </div>
 </body>
 </html>

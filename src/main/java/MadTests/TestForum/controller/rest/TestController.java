@@ -24,4 +24,7 @@ public class TestController {
     public UserRegDTO show2(@PathVariable(name = "sign") String sign) {
         return userService.test(sign);
     }
+
+    @GetMapping(value = "/testuUser")
+    public void testUser() {userService.testUser();}
 }
