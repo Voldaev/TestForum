@@ -171,11 +171,10 @@ public class UserService {
     public MessageDTO saveImg(Long id,String path) throws IOException {
         URL url = new URL(path);
         File file = new File( "src/main/resources/img/" + userRepository.getById(id).getUuid() + "_avatar.jpg");
-        file.delete();
-        FileUtils.copyURLToFile(url, file); //fixme тут надо бы перехватить эксепшн наверное)
-        System.out.println(file.length());
+        FileUtils.copyURLToFile(url, file); //fixme тут надо бы перехватить эксепшн
         UserEntity entity = userRepository.getById(id);
         entity.setAvatar(userRepository.getById(id).getUuid() + "_avatar.jpg");
+        userRepository.save(entity);
         return MessageDTO.builder().success(true).message("наверное получилось").build();
     }
 
