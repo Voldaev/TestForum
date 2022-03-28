@@ -36,4 +36,7 @@ public class UserEntity {
 
     @Column(name = "uuid")
     private String uuid;
+
+    @Column(name = "avatar")
+    private String avatar;
 }

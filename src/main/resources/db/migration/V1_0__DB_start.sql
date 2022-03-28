@@ -6,5 +6,6 @@ CREATE TABLE users
     pass varchar(250) not null ,
     mail varchar(100) unique not null ,
     status int not null ,
-    uuid varchar(250)
+    uuid varchar(250) ,
+    avatar varchar(50)
 );

@@ -9,9 +9,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @Builder
-public class UserEditRegDTO {
-    private String name;
-    private String sign;
-    private String mail;
-    private String ava;
+public class AvaDTO {
+    private String url;
+    private String kek;
 }

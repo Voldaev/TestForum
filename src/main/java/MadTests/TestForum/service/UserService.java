@@ -4,6 +4,7 @@ import MadTests.TestForum.dto.*;
 import MadTests.TestForum.event.UserRegisteredPublished;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -64,6 +69,7 @@ public class UserService {
         entity.setMail(user.getMail());
         entity.setStatus(0);
         entity.setUuid(UUID.randomUUID().toString());
+        entity.setAvatar("default.jpg");
         userRepository.save(entity);
 
         eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
@@ -162,10 +168,18 @@ public class UserService {
         return message(true, "успех");
     }
 
+    public MessageDTO saveImg(Long id,String path) throws IOException {
+        URL url = new URL(path);
+        File file = new File( "src/main/resources/img/" + userRepository.getById(id).getUuid() + "_avatar.jpg");
+        FileUtils.copyURLToFile(url, file); //fixme тут надо бы перехватить эксепшн наверное)
+        UserEntity entity = userRepository.getById(id);
+        entity.setAvatar(userRepository.getById(id).getUuid() + "_avatar.jpg");
+        return MessageDTO.builder().success(true).message("наверное получилось").build();
+    }
 
     public UserEditRegDTO getProfile(Long sessionUserId) {
         UserEntity entity = userRepository.getById(sessionUserId);
-        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).build();
+        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).ava(entity.getAvatar()).build();
     }
 
     //----------------------------------------- DEBUG
@@ -201,6 +215,7 @@ public class UserService {
         entity.setMail("lions.tech.email@mail.ru");
         entity.setUuid(UUID.randomUUID().toString());
         entity.setStatus(1);
+        entity.setAvatar("default.jpg");
         userRepository.save(entity);
     }
 }

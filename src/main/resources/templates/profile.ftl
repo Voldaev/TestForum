@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>edit profile page</title>
 </head>
+
 <script type="text/javascript" src="/static/jquery.js"></script>
 <body>
+<img src="/main/img/${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
@@ -41,22 +43,62 @@
         <br/>
     </div>
    <div class="edit" hidden>
+   <fieldset>
+       <legend>Изменить аватар</legend>
+       <form id="ava-edit-form">
+           <label>
+               url новой аватарки
+               <input name="url" type="text" required="required" />
+           </label>
+           <label hidden>
+            костыль блин, надо погуглить скрипт
+           <input name="kek" type="text" required="required" value="kek" hidden />
+            </label>
+           <button type="button" onclick="editAvaClick()">Сохранить изменения</button>
+       </form>
+
+       <script>
+
+            function editAvaClick() {
+                let formData = Object.fromEntries(new FormData($('#ava-edit-form')[0]).entries())
+                $.ajax({
+                    url: '/main/img/save',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    cache: false,
+                    async: false,
+                    data: JSON.stringify(formData),
+                    success: function(resp) {
+                        console.log(resp)
+                        if (resp.success) {
+                            alert('данные сохранены')
+                        } else {
+                            alert(resp.message)
+                        }
+                    }
+                });
+            }
+
+        </script>
+
+   </fieldset>
     <fieldset>
         <legend>Данные профиля</legend>
         <form id="edit-form">
             <label>
                 имя
-                <input name="name" type="text" required="required" value=${username}/>
+                <input name="name" type="text" required="required" value=${username} />
             </label>
             <br/><br/>
             <label>
                 логин
-                <input name="sign" type="text" required="required" value=${userlogin}/>
+                <input name="sign" type="text" required="required" value=${userlogin} />
             </label>
             <br/><br/>
             <label>
                 email
-                <input name="mail" type="text" required="required" value=${usermail}/>
+                <input name="mail" type="text" required="required" value=${usermail} />
             </label>
             <br/><br/>
             <button type="button" onclick="editClick()">Сохранить изменения</button>
