@@ -73,6 +73,7 @@
                         console.log(resp)
                         if (resp.success) {
                             alert('данные сохранены')
+                            location.href = '/main/profile'
                         } else {
                             alert(resp.message)
                         }
