@@ -15,6 +15,8 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @RestController
@@ -27,12 +29,13 @@ public class ProfileController {
     @RequestMapping(value = "/img/{filename}", method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public void getImage(HttpServletResponse response, @PathVariable String filename) throws IOException {
-        ClassPathResource imgFile = new ClassPathResource("img/" + filename);
+        File file = new File("img/"+ filename);
+        FileInputStream stream = new FileInputStream(file);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
+        StreamUtils.copy(stream, response.getOutputStream());
     }
 
-    @PostMapping(value = "/img/save")
+    @PostMapping("/img/save")
     public MessageDTO saveImage(@RequestBody AvaDTO avaDTO) throws IOException {
         return userService.saveImg(getSessionUserId(), avaDTO.getUrl());
     }

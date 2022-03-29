@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class UserController {
 
-
     @Autowired
     UserService userService;
 
