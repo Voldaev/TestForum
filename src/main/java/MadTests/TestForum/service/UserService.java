@@ -185,17 +185,6 @@ public class UserService {
     }
 
     //----------------------------------------- DEBUG
-    // достает пользователя по логину
-    public UserRegDTO test(String sign) {
-        UserEntity entity = userRepository.findBySign(sign);
-        return UserRegDTO.builder()
-                .name(entity.getName())
-                .sign(entity.getSign())
-                .pass(entity.getPass())
-                .mail(entity.getMail())
-                .build();
-    }
-
     // достает всех из базы
     public List<UserRegDTO> show() {
         List<UserRegDTO> res = new ArrayList<>();

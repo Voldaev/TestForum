@@ -7,7 +7,7 @@
 
 <script type="text/javascript" src="/static/jquery.js"></script>
 <body>
-<img src="/main/img/${useravatar}" width="100" height="100" alt="">
+<img src="/main/profile/img/${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
@@ -62,7 +62,7 @@
             function editAvaClick() {
                 let formData = Object.fromEntries(new FormData($('#ava-edit-form')[0]).entries())
                 $.ajax({
-                    url: '/main/img/save',
+                    url: '/main/profile/img/save',
                     type: 'POST',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -110,7 +110,7 @@
                 function editClick() {
                     let formData = Object.fromEntries(new FormData($('#edit-form')[0]).entries())
                     $.ajax({
-                        url: '/api/registration/edit',
+                        url: '/main/profile/edit',
                         type: 'POST',
                         contentType: 'application/json',
                         dataType: 'json',
@@ -152,7 +152,7 @@
                 function editPassClick() {
                     let formData = Object.fromEntries(new FormData($('#pass-form')[0]).entries())
                     $.ajax({
-                        url: '/api/registration/edit_pass',
+                        url: '/main/profile/edit_pass',
                         type: 'POST',
                         contentType: 'application/json',
                         dataType: 'json',

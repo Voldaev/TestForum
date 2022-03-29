@@ -25,28 +25,4 @@ public class RegistrationController {
         return userService.check(loginDTO);
     }
 
-    @PostMapping("/edit")
-    public MessageDTO edit(@RequestBody UserEditRegDTO userEditRegDTO) {
-        return userService.edit(getSessionUserId(),userEditRegDTO);
-    }
-
-    @PostMapping("/edit_pass")
-    public MessageDTO edit_pass(@RequestBody UserEditPassDTO userEditPassDTO) {
-        return userService.edit_pass(getSessionUserId(), userEditPassDTO);
-    }
-
-    private Long getSessionUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-            Object o = token.getPrincipal();
-            if (o instanceof Long) {
-                return (Long) o;
-            }
-        }
-        return null;
-    }
 }

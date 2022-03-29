@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,4 +40,10 @@ public class UserEntity {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "themeCreator")
+    private List<ThemeEntity> createdThemes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commCreator")
+    private List<CommentEntity> comments;
 }
