@@ -13,10 +13,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -177,10 +180,16 @@ public class UserService {
     //----------------------------------------- DEBUG METHODS
 
     public MessageDTO saveImg(Long id,String path) throws IOException {
-        URL url = new URL(path);
-        String name =  UUID.randomUUID() + "_avatar.jpg";
-        File file = new File( "img/" + name);
-        FileUtils.copyURLToFile(url, file); //fixme тут надо бы перехватить эксепшн
+        String name = UUID.randomUUID() + "_avatar.jpg";
+        File file = new File("img/" + name);
+        if (path.startsWith("http")) {
+            URL url = new URL(path);
+            FileUtils.copyURLToFile(url, file); //fixme тут надо бы перехватить эксепшн
+        } else {
+            FileInputStream in = new FileInputStream(new File(path));
+            FileOutputStream out = new FileOutputStream(file);
+            StreamUtils.copy(in, out);
+        }
         UserEntity entity = userRepository.getById(id);
         entity.setAvatar(name);
         userRepository.save(entity);

@@ -29,13 +29,17 @@ public class TestController {
     @PostMapping(value = "/main/kek", consumes = MediaType.IMAGE_JPEG_VALUE)
     public String saveFile(MultipartFile file) throws IOException {
         //log.debug("save file name {}", file.getOriginalFilename());
-        System.out.println(" мы попали сюда");
-
-        if (file.getSize() > 100 * 2014) {
-            System.out.println("ФАЙЛ ЖИРНЫЙ ААААААА");
-           //throw new IllegalArgumentException("Какие еще " + file.getSize() + " байт. Меньше давай");
+        System.out.println(" мы попали в метод контроллера, сейчас проверим файл на null");
+        if (file!=null) {
+            System.out.println("а файл то не такой уж и пустой");
+        } else {
+            System.out.println("file == null");
         }
-
+//        if (file.getSize() > 100 * 2014) {
+//            System.out.println("ФАЙЛ ЖИРНЫЙ ААААААА");
+//           //throw new IllegalArgumentException("Какие еще " + file.getSize() + " байт. Меньше давай");
+//        }
+      //  System.out.println("it's alive");
        return userService.saveMultipartFile(file);
     }
 
