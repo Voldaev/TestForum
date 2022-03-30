@@ -1,5 +1,6 @@
 package MadTests.TestForum.controller.rest;
 
+import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/test")
 public class TestController {
 
     @Autowired
@@ -26,17 +28,9 @@ public class TestController {
 
     //debug //fixme
     // вариант мультипарт на вход для формы
-    @PostMapping(value = "/main/kek", consumes = MediaType.IMAGE_JPEG_VALUE)
-    public String saveFile(MultipartFile file) throws IOException {
-        //log.debug("save file name {}", file.getOriginalFilename());
-        System.out.println(" мы попали сюда");
-
-        if (file.getSize() > 100 * 2014) {
-            System.out.println("ФАЙЛ ЖИРНЫЙ ААААААА");
-           //throw new IllegalArgumentException("Какие еще " + file.getSize() + " байт. Меньше давай");
-        }
-
-       return userService.saveMultipartFile(file);
+    @PostMapping(value = "/user/avatar/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public MessageDTO saveFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return userService.uploadNewAvatar(file);
     }
 
 //    private Long getSessionUserId() {
