@@ -1,19 +1,12 @@
 package MadTests.TestForum.controller.rest;
 
-import MadTests.TestForum.dto.AvaDTO;
-import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +23,21 @@ public class TestController {
 
     @GetMapping(value = "/testUser")
     public void testUser() {userService.testUser();}
+
+    //debug //fixme
+    // вариант мультипарт на вход для формы
+    @PostMapping(value = "/main/kek", consumes = MediaType.IMAGE_JPEG_VALUE)
+    public String saveFile(MultipartFile file) throws IOException {
+        //log.debug("save file name {}", file.getOriginalFilename());
+        System.out.println(" мы попали сюда");
+
+        if (file.getSize() > 100 * 2014) {
+            System.out.println("ФАЙЛ ЖИРНЫЙ ААААААА");
+           //throw new IllegalArgumentException("Какие еще " + file.getSize() + " байт. Меньше давай");
+        }
+
+       return userService.saveMultipartFile(file);
+    }
 
 //    private Long getSessionUserId() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

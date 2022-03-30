@@ -13,11 +13,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/main/profile")
@@ -36,8 +38,8 @@ public class ProfileController {
     }
 
     @PostMapping("/img/save")
-    public MessageDTO saveImage(@RequestBody AvaDTO avaDTO) throws IOException {
-        return userService.saveImg(getSessionUserId(), avaDTO.getUrl());
+    public MessageDTO saveImage(@RequestBody Map.Entry<String,String> url) throws IOException {
+        return userService.saveImg(getSessionUserId(), url.getValue());
     }
 
     @PostMapping("/edit")

@@ -50,15 +50,9 @@
                url новой аватарки
                <input name="url" type="text" required="required" />
            </label>
-           <label hidden>
-            костыль блин, надо погуглить скрипт
-           <input name="kek" type="text" required="required" value="kek" hidden />
-            </label>
            <button type="button" onclick="editAvaClick()">Сохранить изменения</button>
        </form>
-
        <script>
-
             function editAvaClick() {
                 let formData = Object.fromEntries(new FormData($('#ava-edit-form')[0]).entries())
                 $.ajax({
@@ -80,10 +74,30 @@
                     }
                 });
             }
+        </script>
+   </fieldset>
+       <fieldset>
+           <legend>Изменить аватар 2</legend>
+           <form>
+               <label>
+                   Загрузить свою картинку (перетащите в поле или выберите путь)
+                   <input type="file" name="file" id="file">
+                   <button onclick="doupload()" name="submit">Upload File</button>
+               </label>
+           </form>
+           <script>
+                function doupload() {
+                    let data = document.getElementById("file").files[0];
+                    let entry = document.getElementById("file").files[0];
+                    console.log('doupload',entry,data)
+                    fetch('/main/kek', {method:'POST',body:data});
+                    alert('your file has been uploaded');
+                    location.reload();
+                };
 
         </script>
+       </fieldset>
 
-   </fieldset>
     <fieldset>
         <legend>Данные профиля</legend>
         <form id="edit-form">

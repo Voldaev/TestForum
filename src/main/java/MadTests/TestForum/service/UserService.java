@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,23 @@ public class UserService {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+
+    private void setSessionUserId(Long userId) {
+        if (userId == null) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+        } else {
+            List<GrantedAuthority> roles = new ArrayList<>(0);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId,null, roles);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+    }
+
+    private MessageDTO message(boolean b, String text) {
+        return MessageDTO.builder()
+                .success(b)
+                .message(text)
+                .build();
+    }
 
     public MessageDTO save(UserRegDTO user) {
         UserEntity entity = userRepository.findByEmail(user.getMail());
@@ -83,23 +101,6 @@ public class UserService {
         } else {
             return MessageDTO.builder().success(false).message("данные не верны").build();
         }
-    }
-
-    private void setSessionUserId(Long userId) {
-        if (userId == null) {
-            SecurityContextHolder.getContext().setAuthentication(null);
-        } else {
-            List<GrantedAuthority> roles = new ArrayList<>(0);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId,null, roles);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-    }
-
-    private MessageDTO message(boolean b, String text) {
-        return MessageDTO.builder()
-                .success(b)
-                .message(text)
-                .build();
     }
 
     public String getName(Long id) {
@@ -168,6 +169,13 @@ public class UserService {
         return message(true, "успех");
     }
 
+    public UserEditRegDTO getProfile(Long sessionUserId) {
+        UserEntity entity = userRepository.getById(sessionUserId);
+        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).ava(entity.getAvatar()).build();
+    }
+
+    //----------------------------------------- DEBUG METHODS
+
     public MessageDTO saveImg(Long id,String path) throws IOException {
         URL url = new URL(path);
         String name =  UUID.randomUUID() + "_avatar.jpg";
@@ -179,12 +187,13 @@ public class UserService {
         return MessageDTO.builder().success(true).message("наверное получилось").build();
     }
 
-    public UserEditRegDTO getProfile(Long sessionUserId) {
-        UserEntity entity = userRepository.getById(sessionUserId);
-        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).ava(entity.getAvatar()).build();
+    public String saveMultipartFile(MultipartFile file) {
+        System.out.println("файл всётаки пришёл7");
+        return "kek"; //fixme
     }
 
-    //----------------------------------------- DEBUG
+
+
     // достает всех из базы
     public List<UserRegDTO> show() {
         List<UserRegDTO> res = new ArrayList<>();
@@ -209,4 +218,6 @@ public class UserService {
         entity.setAvatar("default.jpg");
         userRepository.save(entity);
     }
+
+
 }
