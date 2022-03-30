@@ -206,7 +206,7 @@ public class UserService {
             return MessageDTO.ofFalse("Не поддерживаемый формат");
         }
         String avatarName = "avatar-" + System.currentTimeMillis() + "." + getFileExt(file.getName());
-        Path path = Paths.get(dirUtils.getUserDir(), "avatar", avatarName);
+        Path path = Paths.get(dirUtils.getUserDir(),String.valueOf(1), "avatar", avatarName); //todo тут вместо единицы идентификатор пользователя из сессии
         Files.copy(file.getInputStream(), path);
         //todo тут привязку к юзеру далее
         return MessageDTO.ofTrue("Аватар обновлен");
