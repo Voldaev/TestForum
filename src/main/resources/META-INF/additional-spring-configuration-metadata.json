@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "users.file.directory",
+  "type": "java.lang.String",
+  "description": "Папка для хранения файлов загруженных пользователями и связанными с их профилем"
+}]}

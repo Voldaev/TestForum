@@ -95,6 +95,7 @@ public class UserService {
     }
 
     public MessageDTO check(LoginDTO l) {
+        //TODO ниже не хватает проверки что пользователь вообще есть в системе. У тебя тут вылетит ошибка. Можешь проверить.
         if (passwordEncoder.matches(l.getPass(), userRepository.findBySign(l.getSign()).getPass())) {
             setSessionUserId(userRepository.findBySign(l.getSign()).getId());
             return MessageDTO.builder().success(true).message("подтверждено").build();
