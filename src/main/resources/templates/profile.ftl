@@ -5,7 +5,7 @@
     <title>edit profile page</title>
 </head>
 
-<script type="text/javascript" src="/static/jquery.js"></script>
+<script type="text/javascript" src="/static/js/jquery.js"></script>
 <body>
 <img src="${useravatar}" width="100" height="100" alt="">
 <br>
