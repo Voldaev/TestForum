@@ -1,5 +1,6 @@
 package MadTests.TestForum.controller.rest;
 
+import MadTests.TestForum.config.DirUtils;
 import MadTests.TestForum.dto.AvaDTO;
 import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserEditPassDTO;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @RestController
@@ -27,19 +30,21 @@ public class ProfileController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    DirUtils dirUtils;
 
-    @RequestMapping(value = "/img/{filename}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping("/avatar/{filename}")
     public void getImage(HttpServletResponse response, @PathVariable String filename) throws IOException {
-        File file = new File("img/"+ filename);
-        FileInputStream stream = new FileInputStream(file);
+        Path path = Paths.get(dirUtils.getUserDir(), getSessionUserId().toString(), "avatar", filename);
+        FileInputStream stream = new FileInputStream(path.toFile());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(stream, response.getOutputStream());
     }
 
-    @PostMapping("/img/save")
-    public MessageDTO saveImage(@RequestBody Map.Entry<String,String> url) throws IOException {
-        return userService.saveImg(getSessionUserId(), url.getValue());
+    //вариант мультипарт на вход для формы
+    @PostMapping(value = "/avatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public MessageDTO saveFile(@RequestBody MultipartFile file) throws IOException {
+        return userService.uploadNewAvatar(file, getSessionUserId());
     }
 
     @PostMapping("/edit")

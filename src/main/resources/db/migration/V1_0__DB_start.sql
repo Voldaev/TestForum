@@ -7,7 +7,7 @@ CREATE TABLE users
     mail varchar(100) unique not null ,
     status int not null ,
     uuid varchar(250) ,
-    avatar varchar(50)
+    avatar varchar(150)
 );
 
 CREATE TABLE sections

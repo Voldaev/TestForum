@@ -13,5 +13,5 @@ public class UserEditRegDTO {
     private String name;
     private String sign;
     private String mail;
-    private String ava;
+    private String avatar;
 }

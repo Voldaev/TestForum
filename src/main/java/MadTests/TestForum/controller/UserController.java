@@ -53,11 +53,15 @@ public class UserController {
 
     @GetMapping("/main/profile")
     public String profile(Model model) {
-        UserEditRegDTO userEditRegDTO = userService.getProfile(getSessionUserId());
-        model.addAttribute("useravatar", userEditRegDTO.getAva());
-        model.addAttribute("username", userEditRegDTO.getName());
-        model.addAttribute("userlogin",userEditRegDTO.getSign());
-        model.addAttribute("usermail", userEditRegDTO.getMail());
+        UserEditRegDTO profile = userService.getProfile(getSessionUserId());
+        if (profile.getAvatar() == null) {
+            model.addAttribute("useravatar","/static/img/default.jpg");
+        } else {
+            model.addAttribute("useravatar", profile.getAvatar());
+        }
+        model.addAttribute("username", profile.getName());
+        model.addAttribute("userlogin",profile.getSign());
+        model.addAttribute("usermail", profile.getMail());
         return "profile";
     }
 

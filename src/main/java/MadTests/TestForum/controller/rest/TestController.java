@@ -1,9 +1,13 @@
 package MadTests.TestForum.controller.rest;
 
+import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/test")
 public class TestController {
 
     @Autowired
@@ -24,37 +29,25 @@ public class TestController {
     @GetMapping(value = "/testUser")
     public void testUser() {userService.testUser();}
 
-    //debug //fixme
-    // вариант мультипарт на вход для формы
-    @PostMapping(value = "/main/kek", consumes = MediaType.IMAGE_JPEG_VALUE)
-    public String saveFile(MultipartFile file) throws IOException {
-        //log.debug("save file name {}", file.getOriginalFilename());
-        System.out.println(" мы попали в метод контроллера, сейчас проверим файл на null");
-        if (file!=null) {
-            System.out.println("а файл то не такой уж и пустой");
-        } else {
-            System.out.println("file == null");
-        }
-//        if (file.getSize() > 100 * 2014) {
-//            System.out.println("ФАЙЛ ЖИРНЫЙ ААААААА");
-//           //throw new IllegalArgumentException("Какие еще " + file.getSize() + " байт. Меньше давай");
-//        }
-      //  System.out.println("it's alive");
-       return userService.saveMultipartFile(file);
-    }
 
-//    private Long getSessionUserId() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null) {
-//            return null;
-//        }
-//        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-//            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-//            Object o = token.getPrincipal();
-//            if (o instanceof Long) {
-//                return (Long) o;
-//            }
-//        }
-//        return null;
+    // приём загрузки по url
+//    @PostMapping("/img/save")
+//    public MessageDTO saveImage(@RequestBody Map.Entry<String,String> url) throws IOException {
+//        return userService.saveImg(getSessionUserId(), url.getValue());
 //    }
+
+    private Long getSessionUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+            Object o = token.getPrincipal();
+            if (o instanceof Long) {
+                return (Long) o;
+            }
+        }
+        return null;
+    }
 }

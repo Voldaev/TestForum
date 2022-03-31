@@ -7,14 +7,14 @@
 
 <script type="text/javascript" src="/static/jquery.js"></script>
 <body>
-<img src="/main/profile/img/${useravatar}" width="100" height="100" alt="">
+<img src="/main/profile/avatar/${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
     <div role="radiogroup">
-        <input type="radio" name="action" value="up" checked> Просмотр данных профиля
+        <input type="radio" name="action" value="up" > Просмотр данных профиля
         <br/>
-        <input type="radio" name="action" value="down"> Изменение данных профиля
+        <input type="radio" name="action" value="down" checked> Изменение данных профиля
         <br/>
     </div>
             <script>
@@ -31,7 +31,7 @@
                     }
                     }).change();
             </script>
-    <div class="show">
+    <div class="show" hidden>
         <p> имя пользователя</p>
         <p>${username}</p>
         <br/>
@@ -42,7 +42,7 @@
         <p>${usermail}</p>
         <br/>
     </div>
-   <div class="edit" hidden>
+   <div class="edit" >
    <fieldset>
        <legend>Изменить аватар</legend>
        <form id="ava-edit-form">
@@ -88,10 +88,7 @@
            <script>
                 function doupload() {
                     let data = document.getElementById("file").files[0];
-                    let entry = document.getElementById("file").files[0];
-                    console.log('doupload',entry,data)
-                    fetch('/main/kek', {method:'POST',body:data});
-                    alert('your file has been uploaded');
+                    fetch('/main/profile/avatar', {method:'POST',body:new FormData(data)});
                     location.reload();
                 };
 
