@@ -21,7 +21,7 @@
 
 <body style="margin: 1em;">
     <div class="container-fluid">
-        <form class="position-absolute top-50 start-50 translate-middle" data-toggle="validator">
+        <form id="reg-form" class="position-absolute top-50 start-50 translate-middle" data-toggle="validator">
             <div class="container">
             <div class="mb-4 row">
                 <label for="name" class="col-sm-4 col-form-label">Имя</label>
