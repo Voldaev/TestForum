@@ -20,7 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/hello"),
             new AntPathRequestMatcher("/registration/**"),
             new AntPathRequestMatcher("/login/**"),
-            new AntPathRequestMatcher("/confirmation/**"));
+            new AntPathRequestMatcher("/confirmation/**"),
+            new AntPathRequestMatcher("/test/**"));
     private static final RequestMatcher PROTECTED_URLS_2 = new OrRequestMatcher(
             new AntPathRequestMatcher("/main/**")
     );

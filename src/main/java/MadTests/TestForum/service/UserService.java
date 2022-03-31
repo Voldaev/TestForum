@@ -1,10 +1,14 @@
 package MadTests.TestForum.service;
 
+import MadTests.TestForum.config.DirUtils;
 import MadTests.TestForum.dto.*;
 import MadTests.TestForum.event.UserRegisteredPublished;
+import MadTests.TestForum.mapper.UserMapper;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.rep.UserRepository;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,13 +17,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -87,7 +93,6 @@ public class UserService {
         entity.setMail(user.getMail());
         entity.setStatus(0);
         entity.setUuid(UUID.randomUUID().toString());
-        entity.setAvatar("default.jpg");
         userRepository.save(entity);
 
         eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
@@ -170,9 +175,12 @@ public class UserService {
         return message(true, "успех");
     }
 
+    @Autowired
+    UserMapper userMapper;
+
     public UserEditRegDTO getProfile(Long sessionUserId) {
         UserEntity entity = userRepository.getById(sessionUserId);
-        return UserEditRegDTO.builder().name(entity.getName()).sign(entity.getSign()).mail(entity.getMail()).ava(entity.getAvatar()).build();
+        return userMapper.userEditRegDTO(entity);
     }
 
     //----------------------------------------- DEBUG METHODS
@@ -188,11 +196,47 @@ public class UserService {
         return MessageDTO.builder().success(true).message("наверное получилось").build();
     }
 
-    public String saveMultipartFile(MultipartFile file) {
-        System.out.println("файл всётаки пришёл7");
-        return "kek"; //fixme
+    @Autowired
+    DirUtils dirUtils;
+
+    public MessageDTO uploadNewAvatar(MultipartFile file) throws IOException {
+        if (file.getSize() > 100 * 2014) {
+            return MessageDTO.ofFalse("Какие еще " + file.getSize() + " байт. Меньше давай");
+        }
+        if (!isImage(file.getName())) {
+            return MessageDTO.ofFalse("Не поддерживаемый формат");
+        }
+        String avatarName = "avatar-" + System.currentTimeMillis() + "." + getFileExt(file.getName());
+        Path path = Paths.get(dirUtils.getUserDir(),String.valueOf(1), "avatar", avatarName); //todo тут вместо единицы идентификатор пользователя из сессии
+        Files.copy(file.getInputStream(), path);
+        //todo тут привязку к юзеру далее
+        return MessageDTO.ofTrue("Аватар обновлен");
     }
 
+    public static String getFileExt(final String filename) { //todo перенести в класс ютилит и нижний тоже
+        String ext = null;
+        if (filename != null && filename.contains(".")) {
+            int i = filename.lastIndexOf(".");
+            ext = filename.substring(i + 1);
+        }
+        ext = StringUtils.trimToNull(ext);
+        ext = StringUtils.lowerCase(ext);
+        return ext;
+    }
+
+    public static boolean isImage(final String filename) {
+        String ext = getFileExt(filename);
+        if (ext == null) {
+            return false;
+        }
+        switch (ext) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+                return true;
+        }
+        return false;
+    }
 
 
     // достает всех из базы
@@ -216,7 +260,6 @@ public class UserService {
         entity.setMail("lions.tech.email@mail.ru");
         entity.setUuid(UUID.randomUUID().toString());
         entity.setStatus(1);
-        entity.setAvatar("default.jpg");
         userRepository.save(entity);
     }
 

@@ -7,7 +7,7 @@
 
 <script type="text/javascript" src="/static/js/jquery.js"></script>
 <body>
-<img src="/main/profile/img/${useravatar}" width="100" height="100" alt="">
+<img src="${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
