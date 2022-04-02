@@ -88,7 +88,7 @@ public class UserService {
         Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
         Matcher matcher = pattern.matcher(user.getMail());
         if (!matcher.matches()) {
-            return message(false, "некорректный email");
+            return message(false, "Некорректный email");
         }
         entity.setMail(user.getMail());
         entity.setStatus(0);
@@ -96,7 +96,7 @@ public class UserService {
         userRepository.save(entity);
 
         eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
-        return message(true, "успех");
+        return message(true, "Успех");
     }
 
     public MessageDTO check(LoginDTO l) {

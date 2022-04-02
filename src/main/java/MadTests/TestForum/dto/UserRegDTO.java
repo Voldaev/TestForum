@@ -16,20 +16,16 @@ import lombok.*;
 @Builder
 public class UserRegDTO {
 
-    @NotNull
     @NotBlank(message = "Имя не может быть пустым")
     private String name;
 
-    @NotNull
     @NotBlank(message = "Логин не может быть пустым")
     private String sign;
 
-    @NotNull
     @NotBlank(message = "Пароль не может быть пустым")
     @Size(min = 6, message = "Минимальная длинна пароля {min}")
     private String pass;
 
-    @NotNull
     @NotBlank(message = "Почта не может быть пустой")
     @Email
     private String mail;

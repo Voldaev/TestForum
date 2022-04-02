@@ -1,5 +1,13 @@
-{"properties": [{
-  "name": "users.file.directory",
-  "type": "java.lang.String",
-  "description": "Папка для хранения файлов загруженных пользователями и связанными с их профилем"
-}]}
+{
+  "properties": [
+    {
+      "name": "users.file.directory",
+      "type": "java.lang.String",
+      "description": "Папка для хранения файлов загруженных пользователями и связанными с их профилем"
+    },
+    {
+      "name": "spring.freemarker.expose-request-attribute",
+      "type": "java.lang.String",
+      "description": "Description for spring.freemarker.expose-request-attribute."
+    }
+  ]}
