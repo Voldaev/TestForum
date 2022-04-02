@@ -12,7 +12,7 @@ public abstract class UserMapper {
     public abstract UserRegDTO userRegDTO(UserEntity entity);
 
 
-    @Mapping(target = "ava", source = "avatar")
+    // @Mapping(target = "ava", source = "avatar")
     public abstract UserEditRegDTO userEditRegDTO(UserEntity entity);
 
 }
