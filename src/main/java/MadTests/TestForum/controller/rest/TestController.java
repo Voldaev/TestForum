@@ -30,12 +30,6 @@ public class TestController {
     public void testUser() {userService.testUser();}
 
 
-    // приём загрузки по url
-//    @PostMapping("/img/save")
-//    public MessageDTO saveImage(@RequestBody Map.Entry<String,String> url) throws IOException {
-//        return userService.saveImg(getSessionUserId(), url.getValue());
-//    }
-
     private Long getSessionUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {

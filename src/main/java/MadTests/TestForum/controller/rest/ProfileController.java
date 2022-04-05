@@ -46,6 +46,12 @@ public class ProfileController {
     public MessageDTO saveFile(@RequestBody MultipartFile file) throws IOException {
         return userService.uploadNewAvatar(file, getSessionUserId());
     }
+//    // приём загрузки по url
+//    @PostMapping("/img/save")
+//    public MessageDTO saveImage(@RequestBody Map.Entry<String,String> url) throws IOException {
+//        return userService.saveImg(getSessionUserId(), url.getValue());
+//    }
+
 
     @PostMapping("/edit")
     public MessageDTO edit(@RequestBody UserEditRegDTO userEditRegDTO) {

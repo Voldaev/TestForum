@@ -57,7 +57,7 @@ public class UserController {
         if (profile.getAvatar() == null) {
             model.addAttribute("useravatar","/static/img/default.jpg");
         } else {
-            model.addAttribute("useravatar", profile.getAvatar());
+            model.addAttribute("useravatar", "/main/profile/avatar/" + profile.getAvatar());
         }
         model.addAttribute("username", profile.getName());
         model.addAttribute("userlogin",profile.getSign());

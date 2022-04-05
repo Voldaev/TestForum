@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>edit profile page</title>
@@ -7,14 +7,14 @@
 
 <script type="text/javascript" src="/static/jquery.js"></script>
 <body>
-<img src="/main/profile/avatar/${useravatar}" width="100" height="100" alt="">
+<img src="${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
 <div>
     <div role="radiogroup">
-        <input type="radio" name="action" value="up" > Просмотр данных профиля
+        <input type="radio" name="action" value="up" checked> Просмотр данных профиля
         <br/>
-        <input type="radio" name="action" value="down" checked> Изменение данных профиля
+        <input type="radio" name="action" value="down"> Изменение данных профиля
         <br/>
     </div>
             <script>
@@ -22,7 +22,7 @@
 
                     let test = $('input[name="action"]:checked').val();
 
-                    if (test == 'up') {
+                    if (test === 'up') {
                         $(".edit").hide();
                         $(".show").show();
                     } else {
@@ -31,7 +31,7 @@
                     }
                     }).change();
             </script>
-    <div class="show" hidden>
+    <div class="show" >
         <p> имя пользователя</p>
         <p>${username}</p>
         <br/>
@@ -42,56 +42,73 @@
         <p>${usermail}</p>
         <br/>
     </div>
-   <div class="edit" >
-   <fieldset>
-       <legend>Изменить аватар</legend>
-       <form id="ava-edit-form">
-           <label>
-               url новой аватарки
-               <input name="url" type="text" required="required" />
-           </label>
-           <button type="button" onclick="editAvaClick()">Сохранить изменения</button>
-       </form>
-       <script>
-            function editAvaClick() {
-                let formData = Object.fromEntries(new FormData($('#ava-edit-form')[0]).entries())
-                $.ajax({
-                    url: '/main/profile/img/save',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    cache: false,
-                    async: false,
-                    data: JSON.stringify(formData),
-                    success: function(resp) {
-                        console.log(resp)
-                        if (resp.success) {
-                            alert('данные сохранены')
-                            location.href = '/main/profile'
-                        } else {
-                            alert(resp.message)
-                        }
-                    }
-                });
-            }
-        </script>
-   </fieldset>
+   <div class="edit" hidden>
+<#--   <fieldset>-->
+<#--       <legend>Изменить аватар</legend>-->
+<#--       <form id="ava-edit-form">-->
+<#--           <label>-->
+<#--               url новой аватарки-->
+<#--               <input name="url" type="text" required="required" />-->
+<#--           </label>-->
+<#--           <button type="button" onclick="editAvaClick()">Сохранить изменения</button>-->
+<#--       </form>-->
+<#--       <script>-->
+<#--            function editAvaClick() {-->
+<#--                let formData = Object.fromEntries(new FormData($('#ava-edit-form')[0]).entries())-->
+<#--                $.ajax({-->
+<#--                    url: '/main/profile/img/save',-->
+<#--                    type: 'POST',-->
+<#--                    contentType: 'application/json',-->
+<#--                    dataType: 'json',-->
+<#--                    cache: false,-->
+<#--                    async: false,-->
+<#--                    data: JSON.stringify(formData),-->
+<#--                    success: function(resp) {-->
+<#--                        console.log(resp)-->
+<#--                        if (resp.success) {-->
+<#--                            alert('данные сохранены')-->
+<#--                            location.href = '/main/profile'-->
+<#--                        } else {-->
+<#--                            alert(resp.message)-->
+<#--                        }-->
+<#--                    }-->
+<#--                });-->
+<#--            }-->
+<#--        </script>-->
+<#--   </fieldset>-->
        <fieldset>
-           <legend>Изменить аватар 2</legend>
+           <legend>Изменить аватар</legend>
            <form>
                <label>
-                   Загрузить свою картинку (перетащите в поле или выберите путь)
-                   <input type="file" name="file" id="file">
-                   <button onclick="doupload()" name="submit">Upload File</button>
+                   <input type="file" name="file" id="file_input">
+                   <button type="button" onclick="doupload()">Загрузить файл</button>
                </label>
            </form>
            <script>
                 function doupload() {
-                    let data = document.getElementById("file").files[0];
-                    fetch('/main/profile/avatar', {method:'POST',body:new FormData(data)});
-                    location.reload();
-                };
-
+                    var formData = new FormData();
+                    var filesLength = document.getElementById('file_input').files.length;
+                    for (var i = 0; i < filesLength; i++) {
+                        formData.append("file", document.getElementById('file_input').files[i]);
+                    }
+                    $.ajax({
+                        url: '/main/profile/avatar',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(resp) {
+                        console.log(resp)
+                        if (resp.success) {
+                            alert(resp.message)
+                            location.reload();
+                        } else {
+                            alert(resp.message)
+                        }
+                    }
+                    });
+                }
         </script>
        </fieldset>
 
@@ -131,7 +148,7 @@
                         success: function(resp) {
                             console.log(resp)
                             if (resp.success) {
-                                alert('данные сохранены')
+                                alert(resp.message)
                             } else {
                                 alert(resp.message)
                             }
@@ -173,7 +190,7 @@
                         success: function(resp) {
                             console.log(resp)
                             if (resp.success) {
-                                alert('данные сохранены')
+                                alert(resp.message)
                             } else {
                                 alert(resp.message)
                             }
