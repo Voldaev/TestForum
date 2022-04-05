@@ -10,26 +10,26 @@
 <img src="${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
+<br>
 <div>
-    <div role="radiogroup">
-        <input type="radio" name="action" value="up" checked> Просмотр данных профиля
-        <br/>
-        <input type="radio" name="action" value="down"> Изменение данных профиля
-        <br/>
-    </div>
+    <button type="button" onclick="clickclick()">редактировать профиль</button>
+    <script>
+        function clickclick() {
+            document.getElementById("edit-view").click();
+        }
+    </script>
+        <input type="checkbox" id="edit-view" onchange="doreverse()" hidden>
             <script>
-                    $('input[name="action"]').on('change', function() {
-
-                    let test = $('input[name="action"]:checked').val();
-
-                    if (test === 'up') {
-                        $(".edit").hide();
-                        $(".show").show();
-                    } else {
-                        $(".edit").show();
-                        $(".show").hide();
-                    }
-                    }).change();
+                function doreverse() {
+                        var isChecked = document.getElementById("edit-view").checked;
+                        if (isChecked) {
+                            $(".edit").show();
+                            $(".show").hide();
+                        } else {
+                            $(".edit").hide();
+                            $(".show").show();
+                        }
+                }
             </script>
     <div class="show" >
         <p> имя пользователя</p>
