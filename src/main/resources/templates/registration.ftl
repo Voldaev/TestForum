@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>registration page</title>
 </head>
-<script type="text/javascript" src="/static/jquery.js"></script>
+<script type="text/javascript" src="/static/js/jquery.js"></script>
 <body>
     <div>
         <fieldset>

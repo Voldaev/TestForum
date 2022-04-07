@@ -101,11 +101,14 @@ public class UserService {
     }
 
     public MessageDTO check(LoginDTO l) {
+        if (userRepository.findBySign(l.getSign())==null) {
+            return MessageDTO.failed("данные не верны");
+        }
         if (passwordEncoder.matches(l.getPass(), userRepository.findBySign(l.getSign()).getPass())) {
             setSessionUserId(userRepository.findBySign(l.getSign()).getId());
-            return MessageDTO.builder().success(true).message("подтверждено").build();
+            return MessageDTO.succeed("подтверждено");
         } else {
-            return MessageDTO.builder().success(false).message("данные не верны").build();
+            return MessageDTO.failed("данные не верны");
         }
     }
 
