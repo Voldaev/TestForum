@@ -1,12 +1,16 @@
 package MadTests.TestForum.controller.rest;
 
-import MadTests.TestForum.dto.*;
+import MadTests.TestForum.dto.LoginDTO;
+import MadTests.TestForum.dto.MessageDTO;
+import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -16,7 +20,7 @@ public class RegistrationController {
     UserService userService;
 
     @PostMapping("/registration")
-    public MessageDTO reg(@RequestBody UserRegDTO userRegDTO) {
+    public MessageDTO reg(@RequestBody @Valid UserRegDTO userRegDTO) {
         return userService.save(userRegDTO);
     }
 

@@ -64,6 +64,12 @@ public class UserService {
     }
 
     public MessageDTO save(UserRegDTO user) {
+        if (true) // fixme debug
+            System.out.println("\n" +
+                    user.getName() + " - name\n" +
+                    user.getSign() + " - sign\n" +
+                    user.getPass() + " - pass\n" +
+                    user.getMail() + " - mail\n" );
         UserEntity entity = userRepository.findByEmail(user.getMail());
         if (entity != null) {
             return MessageDTO.failed("Электронная почта уже занята");
