@@ -2,6 +2,7 @@ package MadTests.TestForum;
 
 import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserRegDTO;
+import MadTests.TestForum.exceiption.ErrorBody;
 import MadTests.TestForum.service.MailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -81,11 +82,31 @@ public class RegistrationTest {
 
         Assertions.assertNotNull(response.getBody());
 
-        Assertions.assertNotNull(response.getBody());
-
         Assertions.assertTrue(response.getBody().isSuccess());
 
         Assertions.assertEquals(response.getBody().getMessage(),"Успех");
+    }
+
+    @Test
+    public void testRegistrationError() {
+        Mockito.when(mailService.sendSimpleMessage(Mockito.anyString(),Mockito.anyString(),Mockito.anyString()))
+                .thenReturn(true);
+
+        UserRegDTO userRegDTO = new UserRegDTO();
+        userRegDTO.setName("ц231вфцвфццф");
+        userRegDTO.setMail("test@test.ru");
+        userRegDTO.setPass("daw");
+        userRegDTO.setSign("alex");
+
+        String url = getUrl("/api/registration/registration");
+
+        ResponseEntity<ErrorBody> response = testRestTemplate.postForEntity(url, CookieControl.getBody(userRegDTO), ErrorBody.class);
+
+        Assertions.assertTrue(response.getStatusCode().isError());
+
+        Assertions.assertNotNull(response.getBody());
+
+        Assertions.assertTrue(response.getBody().getFields().size() > 0);
     }
 
 }
