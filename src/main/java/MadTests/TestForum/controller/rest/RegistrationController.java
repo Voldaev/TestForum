@@ -21,6 +21,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public MessageDTO reg(@RequestBody @Valid UserRegDTO userRegDTO) {
+        //fixme перехват экспешенов валидации
         return userService.save(userRegDTO);
     }
 

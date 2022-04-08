@@ -56,39 +56,17 @@ public class UserService {
     }
 
     public MessageDTO save(UserRegDTO user) {
-        if (true) // fixme debug
-            System.out.println("\n" +
-                    user.getName() + " - name\n" +
-                    user.getSign() + " - sign\n" +
-                    user.getPass() + " - pass\n" +
-                    user.getMail() + " - mail\n" );
         UserEntity entity = userRepository.findByEmail(user.getMail());
         if (entity != null) {
             return MessageDTO.failed("Электронная почта уже занята");
         }
-
         entity = new UserEntity();
-        if (user.getName().length()<2) {
-            return MessageDTO.failed("Некорректное имя");
-        }
         entity.setName(user.getName());
-
         if (userRepository.findBySign(user.getSign())!=null) {
             return MessageDTO.failed("Логин уже занят, попробуйте другой");
         }
-        if (user.getName().length()<3) {
-            return MessageDTO.failed("Слишком короткий логин");
-        }
         entity.setSign(user.getSign());
-        if (user.getPass().length()<6) {
-            return MessageDTO.failed("Слишком короткий пароль");
-        }
         entity.setPass(passwordEncoder.encode(user.getPass()));
-        Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
-        Matcher matcher = pattern.matcher(user.getMail());
-        if (!matcher.matches()) {
-            return MessageDTO.failed("некорректный email");
-        }
         entity.setMail(user.getMail());
         entity.setStatus(0);
         entity.setUuid(UUID.randomUUID().toString());
