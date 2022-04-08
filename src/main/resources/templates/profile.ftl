@@ -164,12 +164,12 @@
         <form id="pass-form">
             <label>
                 старый пароль
-                <input name="oldPass" type="text" required="required" />
+                <input name="oldPass" type="password" required="required" />
             </label>
             <br/><br/>
             <label>
                 новый пароль
-                <input name="newPass" type="text" required="required" />
+                <input name="newPass" type="password" required="required" />
             </label>
             <br/><br/>
             <button type="button" onclick="editPassClick()">Сохранить пароль</button>
