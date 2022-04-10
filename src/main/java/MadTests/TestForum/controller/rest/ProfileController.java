@@ -1,13 +1,12 @@
 package MadTests.TestForum.controller.rest;
 
 import MadTests.TestForum.config.DirUtils;
-import MadTests.TestForum.dto.AvaDTO;
+import MadTests.TestForum.controller.BaseController;
 import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserEditPassDTO;
 import MadTests.TestForum.dto.UserEditRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,16 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/main/profile")
-public class ProfileController {
+public class ProfileController extends BaseController {
 
     @Autowired
     UserService userService;

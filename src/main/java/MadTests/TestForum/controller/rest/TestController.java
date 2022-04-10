@@ -1,22 +1,21 @@
 package MadTests.TestForum.controller.rest;
 
-import MadTests.TestForum.dto.MessageDTO;
+import MadTests.TestForum.controller.BaseController;
 import MadTests.TestForum.dto.UserRegDTO;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/test")
-public class TestController {
+public class TestController extends BaseController {
 
     @Autowired
     UserService userService;

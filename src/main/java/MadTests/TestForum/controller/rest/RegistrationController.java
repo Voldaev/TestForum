@@ -1,5 +1,6 @@
 package MadTests.TestForum.controller.rest;
 
+import MadTests.TestForum.controller.BaseController;
 import MadTests.TestForum.dto.LoginDTO;
 import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.UserRegDTO;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/registration")
-public class RegistrationController {
+public class RegistrationController extends BaseController {
 
     @Autowired
     UserService userService;
