@@ -5,6 +5,7 @@ import MadTests.TestForum.dto.*;
 import MadTests.TestForum.event.UserRegisteredPublished;
 import MadTests.TestForum.mapper.UserMapper;
 import MadTests.TestForum.model.UserEntity;
+import MadTests.TestForum.model.enums.Status;
 import MadTests.TestForum.rep.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -68,7 +69,7 @@ public class UserService {
         entity.setSign(user.getSign());
         entity.setPass(passwordEncoder.encode(user.getPass()));
         entity.setMail(user.getMail());
-        entity.setStatus(0);
+        entity.setStatus(Status.UNCHECKED);
         entity.setUuid(UUID.randomUUID().toString());
         userRepository.save(entity);
 
@@ -92,14 +93,14 @@ public class UserService {
         return userRepository.getById(id).getName();
     }
 
-    public Integer getStatus(Long id) {
+    public Status getStatus(Long id) {
         return userRepository.getById(id).getStatus();
     }
 
     public boolean active(String uuid) {
         UserEntity entity = userRepository.findByUuid(uuid);
         if (entity!=null) {
-            entity.setStatus(1);
+            entity.setStatus(Status.ACTIVE);
             userRepository.save(entity);
             return true;
         }
@@ -215,7 +216,7 @@ public class UserService {
         entity.setPass(passwordEncoder.encode("ASDASD"));
         entity.setMail("lions.tech.email@mail.ru");
         entity.setUuid(UUID.randomUUID().toString());
-        entity.setStatus(1);
+        entity.setStatus(Status.ACTIVE);
         userRepository.save(entity);
     }
 

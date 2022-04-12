@@ -1,5 +1,6 @@
 package MadTests.TestForum.model;
 
+import MadTests.TestForum.model.enums.Status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class UserEntity {
     private String mail;
 
     @Column(name = "status")
-    private Integer status; // fixme как поведёт себя enum с базой?
+    private Status status; // fixme как поведёт себя enum с базой?
 
     @Column(name = "uuid")
     private String uuid;

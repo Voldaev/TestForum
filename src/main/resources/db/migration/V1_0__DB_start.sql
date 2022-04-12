@@ -5,7 +5,7 @@ CREATE TABLE users
     sign varchar(50) unique not null ,
     pass varchar(250) not null ,
     mail varchar(100) unique not null ,
-    status int not null ,
+    status varchar(10) not null ,
     uuid varchar(250) ,
     avatar varchar(150)
 );

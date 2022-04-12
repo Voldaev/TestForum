@@ -1,6 +1,7 @@
 package MadTests.TestForum.controller;
 
 import MadTests.TestForum.dto.UserEditRegDTO;
+import MadTests.TestForum.model.enums.Status;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,7 +46,7 @@ public class UserController extends BaseController {
     @GetMapping("/main")
     public String hello(Model model) {
         model.addAttribute("name", userService.getName(getSessionUserId()));
-        if (userService.getStatus(getSessionUserId())<1) {
+        if (userService.getStatus(getSessionUserId()).equals(Status.UNCHECKED)) {
             model.addAttribute("status","Внимание! email не подтвержден!");
         }
         return "main";
