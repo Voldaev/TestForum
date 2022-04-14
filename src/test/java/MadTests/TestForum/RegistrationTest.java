@@ -6,6 +6,7 @@ import MadTests.TestForum.service.MailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -59,7 +60,8 @@ public class RegistrationTest {
         return res + url;
     }
 
-    TestRestTemplate testRestTemplate = new TestRestTemplate();
+    @Autowired
+    TestRestTemplate testRestTemplate = new TestRestTemplate(TestRestTemplate.HttpClientOption.ENABLE_COOKIES);
 
     @MockBean
     MailService mailService;
