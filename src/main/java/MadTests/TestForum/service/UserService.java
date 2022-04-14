@@ -74,18 +74,18 @@ public class UserService {
         userRepository.save(entity);
 
         eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
-        return MessageDTO.succeed("успех");
+        return MessageDTO.succeed("Успех");
     }
 
     public MessageDTO check(LoginDTO l) {
         if (userRepository.findBySign(l.getSign())==null) {
-            return MessageDTO.failed("данные не верны");
+            return MessageDTO.failed("Данные не верны");
         }
         if (passwordEncoder.matches(l.getPass(), userRepository.findBySign(l.getSign()).getPass())) {
             setSessionUserId(userRepository.findBySign(l.getSign()).getId());
-            return MessageDTO.succeed("подтверждено");
+            return MessageDTO.succeed("Подтверждено");
         } else {
-            return MessageDTO.failed("данные не верны");
+            return MessageDTO.failed("Данные не верны");
         }
     }
 
@@ -127,32 +127,32 @@ public class UserService {
             return MessageDTO.failed("Электронная почта уже занята");
         }
         Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
-        Matcher matcher = pattern.matcher(userEditRegDTO.getMail());
+        Matcher matcher = pattern.matcher(userEditRegDTO.getMail()); //fixme почистить код валидацией в дто
         if (!matcher.matches()) {
-            return MessageDTO.failed("некорректный email");
+            return MessageDTO.failed("Некорректный email");
         }
         if (!entity.getMail().equals(userEditRegDTO.getMail())) {
             eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
         }
         entity.setMail(userEditRegDTO.getMail());
         userRepository.save(entity);
-        return MessageDTO.succeed("успех");
+        return MessageDTO.succeed("Успех");
     }
 
     public MessageDTO edit_pass(Long sessionUserId, UserEditPassDTO userEditPassDTO) {
         UserEntity entity = userRepository.getById(sessionUserId);
         if (!passwordEncoder.matches(userEditPassDTO.getOldPass(),entity.getPass())) {
-            return MessageDTO.failed("старый пароль не совпадает");
+            return MessageDTO.failed("Старый пароль не совпадает");
         }
         if (passwordEncoder.matches(userEditPassDTO.getNewPass(),entity.getPass())) {
-            return MessageDTO.failed("старый и новый пароли не должны совпадать");
+            return MessageDTO.failed("Старый и новый пароли не должны совпадать");
         }
         if (userEditPassDTO.getNewPass().length()<6) {
-            return MessageDTO.failed("новый пароль слишком короткий");
+            return MessageDTO.failed("Новый пароль слишком короткий"); //fixme почистить код валидацией в дто
         }
         entity.setPass(passwordEncoder.encode(userEditPassDTO.getNewPass()));
         userRepository.save(entity);
-        return MessageDTO.succeed("успех");
+        return MessageDTO.succeed("Успех");
     }
 
     public UserEditRegDTO getProfile(Long sessionUserId) {

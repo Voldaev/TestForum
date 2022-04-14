@@ -1,6 +1,7 @@
 package MadTests.TestForum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,10 +13,11 @@ public class MailService {
     @Value("${spring.mail.username}")
     private String user;
 
+    @Qualifier("getMailSender")
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendSimpleMessage(
+    public boolean sendSimpleMessage(
             String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -24,6 +26,6 @@ public class MailService {
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-
+        return true;
     }
 }
