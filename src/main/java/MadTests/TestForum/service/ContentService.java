@@ -1,5 +1,7 @@
 package MadTests.TestForum.service;
 
+import MadTests.TestForum.dto.ThemeDTO;
+import MadTests.TestForum.mapper.EntityDtoMapper;
 import MadTests.TestForum.model.SectionEntity;
 import MadTests.TestForum.rep.CommentRepository;
 import MadTests.TestForum.rep.SectionRepository;
@@ -29,26 +31,27 @@ public class ContentService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    EntityDtoMapper entityDtoMapper;
+
     public List<String> getSectionNames() {
         ArrayList<String> list = new ArrayList<>();
-        sectionRepository.findAll().forEach(section -> {
-            list.add(section.getName());
-        });
+        sectionRepository.findAll().forEach(section -> list.add(section.getName()));
         return list;
     }
 
     //fixme debug
-    public List<String> getSectionContent(String section, int page) {
-        LinkedList<String> list = new LinkedList<>();
+    public List<ThemeDTO> getSectionContent(String section, int page) {
+        int themesPerPage = 5; //fixme добавить опцию выбора количества
+        LinkedList<ThemeDTO> list = new LinkedList<>();
         SectionEntity sectionEntity = sectionRepository.getById(section);
-        sectionEntity.getThemes().forEach(themeEntity -> {
-            list.add(themeEntity.getTheme());
-        });
-        for (int i = 1; i < (page-1)*5;i++){
+        sectionEntity.getThemes().forEach(themeEntity -> list.add(entityDtoMapper.toThemeDTO(themeEntity)));
+        for (int i = 1; i < (page-1)*themesPerPage;i++){
             list.remove(0);
         }
-        while (list.size()>5)
+        while (list.size()>themesPerPage)
             list.removeLast();
         return list;
     }
+
 }

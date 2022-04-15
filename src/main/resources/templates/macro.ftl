@@ -12,7 +12,22 @@
     <table>
         <#list rows as row>
             <div class="row">
-                <p> ${row}</p>
+                <p> ${row.section}</p>
+            </div>
+            <div class="row">
+                <p> ${row.themeCreator}</p>
+            </div>
+            <div class="row">
+                <p> ${row.theme}</p>
+            </div>
+            <div class="row">
+                <p> ${row.text}</p>
+            </div>
+            <div class="row">
+                <p> ${row.published}</p>
+            </div>
+            <div class="row">
+                <p> ${row.score}</p>
             </div>
         </#list>
     </table>

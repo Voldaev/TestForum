@@ -40,8 +40,12 @@
                     </div>
                 </div>
                 <div class="col text-center">
-                    <h4> посетите разделы, вот их список: </h4>
-                    <@ui.sections rows=sections![]/>
+                    <div class="row">
+                        <h4> посетите разделы, вот их список: </h4>
+                    </div>
+                    <div class="row">
+                        <@ui.sections rows=sections![]/>
+                    </div>
                 </div>
             </div>
         </div>

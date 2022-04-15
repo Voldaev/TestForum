@@ -3,7 +3,7 @@ package MadTests.TestForum.service;
 import MadTests.TestForum.config.DirUtils;
 import MadTests.TestForum.dto.*;
 import MadTests.TestForum.event.UserRegisteredPublished;
-import MadTests.TestForum.mapper.UserMapper;
+import MadTests.TestForum.mapper.EntityDtoMapper;
 import MadTests.TestForum.model.UserEntity;
 import MadTests.TestForum.model.enums.Status;
 import MadTests.TestForum.rep.UserRepository;
@@ -24,8 +24,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -41,7 +39,7 @@ public class UserService {
     private ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    UserMapper userMapper;
+    EntityDtoMapper entityDtoMapper;
 
     @Autowired
     DirUtils dirUtils;
@@ -137,7 +135,7 @@ public class UserService {
 
     public UserEditRegDTO getProfile(Long sessionUserId) {
         UserEntity entity = userRepository.getById(sessionUserId);
-        return userMapper.toUserEditRegDTO(entity);
+        return entityDtoMapper.toUserEditRegDTO(entity);
     }
 
     public MessageDTO uploadNewAvatar(MultipartFile file, Long userId) throws IOException {
