@@ -89,10 +89,6 @@ public class UserService {
         }
     }
 
-    public String getName(Long id) {
-        return userRepository.getById(id).getName();
-    }
-
     public Status getStatus(Long id) {
         return userRepository.getById(id).getStatus();
     }

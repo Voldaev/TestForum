@@ -1,4 +1,9 @@
-<#macro formInput id name label type="text" value="">
-<label for="${id}">${label}</label>
-<input type="${type}" id="${id}" name="${name}" value="${value}">
+<#macro table rows>
+    <table>
+        <#list rows as row>
+            <div class="row">
+                <a href="/main/${row}">${row}</a>
+            </div>
+        </#list>
+    </table>
 </#macro>

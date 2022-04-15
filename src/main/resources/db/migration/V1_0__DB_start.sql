@@ -14,8 +14,6 @@ CREATE TABLE sections
 (
     name varchar(50) primary key
 );
--- тестовый раздел
-INSERT INTO sections (name) VALUES ('TestSection');
 
 CREATE TABLE themes
 (

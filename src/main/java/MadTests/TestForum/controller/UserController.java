@@ -2,6 +2,7 @@ package MadTests.TestForum.controller;
 
 import MadTests.TestForum.dto.UserEditRegDTO;
 import MadTests.TestForum.model.enums.Status;
+import MadTests.TestForum.service.ContentService;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,9 @@ public class UserController extends BaseController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ContentService contentService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -45,10 +49,18 @@ public class UserController extends BaseController {
 
     @GetMapping("/main")
     public String hello(Model model) {
-        model.addAttribute("name", userService.getName(getSessionUserId()));
+        UserEditRegDTO profile = userService.getProfile(getSessionUserId());
+        model.addAttribute("name", profile.getName());
+        if (profile.getAvatar() == null) {
+            model.addAttribute("useravatar","/static/img/default.jpg");
+        } else {
+            model.addAttribute("useravatar", "/main/profile/avatar/" + profile.getAvatar());
+        }
         if (userService.getStatus(getSessionUserId()).equals(Status.UNCHECKED)) {
             model.addAttribute("status","Внимание! email не подтвержден!");
         }
+        model.addAttribute("sections", contentService.getSectionNames());
+
         return "main";
     }
 
