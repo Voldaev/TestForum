@@ -2,7 +2,7 @@
     <table>
         <#list rows as row>
             <div class="row">
-                <a href="/main/${row}">${row}</a>
+                <a href="/main/${row}/1">${row}</a>
             </div>
         </#list>
     </table>

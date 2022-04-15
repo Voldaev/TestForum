@@ -21,8 +21,11 @@ public class SectionController extends BaseController{
     @Autowired
     ContentService contentService;
 
-    @GetMapping("/main/{section}")
-    public String hello(Model model, @PathVariable String section) {
+    @GetMapping("/main/{section}/{page}")
+    public String section(Model model,
+                          @PathVariable String section,
+                          @PathVariable int page)
+    {
         UserEditRegDTO profile = userService.getProfile(getSessionUserId());
         model.addAttribute("sectionname", section);
         if (profile.getAvatar() == null) {
@@ -33,7 +36,7 @@ public class SectionController extends BaseController{
         if (userService.getStatus(getSessionUserId()).equals(Status.UNCHECKED)) {
             model.addAttribute("status","Внимание! email не подтвержден, активность ограничена");
         }
-        model.addAttribute("content", contentService.getSectionContent(section));
+        model.addAttribute("content", contentService.getSectionContent(section, page));
 
         return "section";
     }

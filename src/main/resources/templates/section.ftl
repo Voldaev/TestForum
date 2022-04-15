@@ -42,11 +42,11 @@
                 <div class="col text-center">
                     <@ui.themes rows=content![]/>
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination">
+                        <ul class="pagination justify-content-center">
                             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/1">1</a></li>
+                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/2">2</a></li>
+                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/3">3</a></li>
                             <li class="page-item"><a class="page-link" href="#">Next</a></li>
                         </ul>
                     </nav>

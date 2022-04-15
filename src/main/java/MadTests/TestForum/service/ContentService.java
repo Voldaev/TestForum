@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -37,12 +38,17 @@ public class ContentService {
     }
 
     //fixme debug
-    public List<String> getSectionContent(String section) {
-        ArrayList<String> list = new ArrayList<>();
+    public List<String> getSectionContent(String section, int page) {
+        LinkedList<String> list = new LinkedList<>();
         SectionEntity sectionEntity = sectionRepository.getById(section);
         sectionEntity.getThemes().forEach(themeEntity -> {
             list.add(themeEntity.getTheme());
         });
+        for (int i = 1; i < (page-1)*5;i++){
+            list.remove(0);
+        }
+        while (list.size()>5)
+            list.removeLast();
         return list;
     }
 }
