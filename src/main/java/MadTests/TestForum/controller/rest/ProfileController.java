@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,12 +52,14 @@ public class ProfileController extends BaseController {
 
 
     @PostMapping("/edit")
-    public MessageDTO edit(@RequestBody UserEditRegDTO userEditRegDTO) {
+    public MessageDTO edit(@Valid @RequestBody UserEditRegDTO userEditRegDTO) {
+
         return userService.edit(getSessionUserId(),userEditRegDTO);
     }
 
     @PostMapping("/edit_pass")
-    public MessageDTO edit_pass(@RequestBody UserEditPassDTO userEditPassDTO) {
+    public MessageDTO edit_pass(@Valid @RequestBody UserEditPassDTO userEditPassDTO) {
+
         return userService.edit_pass(getSessionUserId(), userEditPassDTO);
     }
 

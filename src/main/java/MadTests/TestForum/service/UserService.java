@@ -109,27 +109,14 @@ public class UserService {
 
     public MessageDTO edit(Long sessionUserId, UserEditRegDTO userEditRegDTO) {
         UserEntity entity = userRepository.getById(sessionUserId);
-        if (userEditRegDTO.getName().length()<2) {
-            return MessageDTO.failed("Некорректное имя");
-        }
         entity.setName(userEditRegDTO.getName());
-
         if ((!entity.getSign().equals(userEditRegDTO.getSign())) && userRepository.findBySign(userEditRegDTO.getSign())!=null) {
             return MessageDTO.failed("Логин уже занят, попробуйте другой");
         }
-        if (userEditRegDTO.getName().length()<3) {
-            return MessageDTO.failed("Слишком короткий логин");
-        }
         entity.setSign(userEditRegDTO.getSign());
-
         if ((!entity.getMail().equals(userEditRegDTO.getMail())) && userRepository.findByEmail(userEditRegDTO.getMail())!=null)
         {
             return MessageDTO.failed("Электронная почта уже занята");
-        }
-        Pattern pattern = Pattern.compile("([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+@([A-Za-z0-9]+[\\\\-]?[A-Za-z0-9]+[\\\\.]?[A-Za-z0-9]+)+[\\\\.][a-z]{2,4}");
-        Matcher matcher = pattern.matcher(userEditRegDTO.getMail()); //fixme почистить код валидацией в дто
-        if (!matcher.matches()) {
-            return MessageDTO.failed("Некорректный email");
         }
         if (!entity.getMail().equals(userEditRegDTO.getMail())) {
             eventPublisher.publishEvent(new UserRegisteredPublished(entity.getSign(), entity.getUuid(), entity.getMail()));
@@ -146,9 +133,6 @@ public class UserService {
         }
         if (passwordEncoder.matches(userEditPassDTO.getNewPass(),entity.getPass())) {
             return MessageDTO.failed("Старый и новый пароли не должны совпадать");
-        }
-        if (userEditPassDTO.getNewPass().length()<6) {
-            return MessageDTO.failed("Новый пароль слишком короткий"); //fixme почистить код валидацией в дто
         }
         entity.setPass(passwordEncoder.encode(userEditPassDTO.getNewPass()));
         userRepository.save(entity);

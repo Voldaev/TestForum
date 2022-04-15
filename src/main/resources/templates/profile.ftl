@@ -127,7 +127,7 @@
             <br/><br/>
             <label>
                 email
-                <input name="mail" type="text" required="required" value=${usermail} />
+                <input name="mail" type="email" required="required" value=${usermail} />
             </label>
             <br/><br/>
             <button type="button" onclick="editClick()">Сохранить изменения</button>
