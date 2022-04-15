@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class UserController extends BaseController {
+public class UserController extends BaseController{
 
     @Autowired
     UserService userService;
@@ -57,7 +57,7 @@ public class UserController extends BaseController {
             model.addAttribute("useravatar", "/main/profile/avatar/" + profile.getAvatar());
         }
         if (userService.getStatus(getSessionUserId()).equals(Status.UNCHECKED)) {
-            model.addAttribute("status","Внимание! email не подтвержден!");
+            model.addAttribute("status","Внимание! email не подтвержден, активность ограничена");
         }
         model.addAttribute("sections", contentService.getSectionNames());
 
@@ -77,23 +77,4 @@ public class UserController extends BaseController {
         model.addAttribute("usermail", profile.getMail());
         return "profile";
     }
-
-
-    private Long getSessionUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-            Object o = token.getPrincipal();
-            if (o instanceof Long) {
-                return (Long) o;
-            }
-        }
-        return null;
-    }
-
-
-
 }

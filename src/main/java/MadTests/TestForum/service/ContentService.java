@@ -1,5 +1,6 @@
 package MadTests.TestForum.service;
 
+import MadTests.TestForum.model.SectionEntity;
 import MadTests.TestForum.rep.CommentRepository;
 import MadTests.TestForum.rep.SectionRepository;
 import MadTests.TestForum.rep.ThemeRepository;
@@ -35,4 +36,13 @@ public class ContentService {
         return list;
     }
 
+    //fixme debug
+    public List<String> getSectionContent(String section) {
+        ArrayList<String> list = new ArrayList<>();
+        SectionEntity sectionEntity = sectionRepository.getById(section);
+        sectionEntity.getThemes().forEach(themeEntity -> {
+            list.add(themeEntity.getTheme());
+        });
+        return list;
+    }
 }

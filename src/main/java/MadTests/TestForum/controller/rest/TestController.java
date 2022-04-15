@@ -28,19 +28,4 @@ public class TestController extends BaseController {
     @GetMapping(value = "/testUser")
     public void testUser() {userService.testUser();}
 
-
-    private Long getSessionUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-            Object o = token.getPrincipal();
-            if (o instanceof Long) {
-                return (Long) o;
-            }
-        }
-        return null;
-    }
 }

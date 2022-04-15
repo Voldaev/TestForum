@@ -62,19 +62,4 @@ public class ProfileController extends BaseController {
 
         return userService.edit_pass(getSessionUserId(), userEditPassDTO);
     }
-
-    private Long getSessionUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-            Object o = token.getPrincipal();
-            if (o instanceof Long) {
-                return (Long) o;
-            }
-        }
-        return null;
-    }
 }
