@@ -5,9 +5,6 @@ import MadTests.TestForum.model.enums.Status;
 import MadTests.TestForum.service.ContentService;
 import MadTests.TestForum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,14 +64,12 @@ public class UserController extends BaseController{
     @GetMapping("/main/profile")
     public String profile(Model model) {
         UserEditRegDTO profile = userService.getProfile(getSessionUserId());
+        model.addAttribute("profile",profile);
         if (profile.getAvatar() == null) {
             model.addAttribute("useravatar","/static/img/default.jpg");
         } else {
             model.addAttribute("useravatar", "/main/profile/avatar/" + profile.getAvatar());
         }
-        model.addAttribute("username", profile.getName());
-        model.addAttribute("userlogin",profile.getSign());
-        model.addAttribute("usermail", profile.getMail());
         return "profile";
     }
 }

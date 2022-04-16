@@ -1,3 +1,4 @@
+<#import "macro.ftl" as ui/>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -7,6 +8,7 @@
 
 <script type="text/javascript" src="/static/js/jquery.js"></script>
 <body>
+<@ui.nicehat></@ui.nicehat>
 <img src="${useravatar}" width="100" height="100" alt="">
 <br>
 <a href="/main">вернуться на главную</a>
@@ -33,13 +35,13 @@
             </script>
     <div class="show" >
         <p> имя пользователя</p>
-        <p>${username}</p>
+        <p>${profile.name}</p>
         <br/>
         <p> логин пользователя</p>
-        <p>${userlogin}</p>
+        <p>${profile.sign}</p>
         <br/>
         <p> email пользователя</p>
-        <p>${usermail}</p>
+        <p>${profile.mail}</p>
         <br/>
     </div>
    <div class="edit" hidden>
@@ -117,17 +119,17 @@
         <form id="edit-form">
             <label>
                 имя
-                <input name="name" type="text" required="required" value=${username} />
+                <input name="name" type="text" required="required" value=${profile.name} />
             </label>
             <br/><br/>
             <label>
                 логин
-                <input name="sign" type="text" required="required" value=${userlogin} />
+                <input name="sign" type="text" required="required" value=${profile.sign} />
             </label>
             <br/><br/>
             <label>
                 email
-                <input name="mail" type="email" required="required" value=${usermail} />
+                <input name="mail" type="email" required="required" value=${profile.mail} />
             </label>
             <br/><br/>
             <button type="button" onclick="editClick()">Сохранить изменения</button>

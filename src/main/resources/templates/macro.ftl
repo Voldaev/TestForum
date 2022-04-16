@@ -1,3 +1,11 @@
+<#macro nicehat>
+    <div class="row">
+        <div class="col text-center ">
+            <h1> КРАСИВАЯ ШАПКА С НАЗВАНИЕМ </h1>
+        </div>
+    </div>
+</#macro>
+
 <#macro sections rows>
     <table>
         <#list rows as row>

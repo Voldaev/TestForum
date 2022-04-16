@@ -17,11 +17,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col text-center ">
-                    <h1> КРАСИВАЯ ШАПКА С НАЗВАНИЕМ </h1>
-                </div>
-            </div>
+            <@ui.nicehat></@ui.nicehat>
             <div class="row">
                 <div class="col text-center">
                     <h2 >Добро пожаловать, ${name}!</h2>

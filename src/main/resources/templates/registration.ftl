@@ -1,3 +1,4 @@
+<#import "macro.ftl" as ui/>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,6 +15,7 @@
 
 </head>
 <body>
+<@ui.nicehat></@ui.nicehat>
     <div class="container-fluid">
         <form id="reg-form" class="position-absolute top-50 start-50 translate-middle">
             <div class="mb-3 text-center">
