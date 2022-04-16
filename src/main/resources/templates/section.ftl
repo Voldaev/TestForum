@@ -36,14 +36,17 @@
                     </div>
                 </div>
                 <div class="col text-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <#if (page>1)><li class="page-item"><a class="page-link" href="/main/${sectionname}/${page-1}">Предыдущая страница</a></li><#else></#if>
+                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/${page+1}">Следующая страница</a></li>
+                        </ul>
+                    </nav>
                     <@ui.themes rows=content![]/>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/1">1</a></li>
-                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/2">2</a></li>
-                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/3">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            <#if (page>1)><li class="page-item"><a class="page-link" href="/main/${sectionname}/${page-1}">Предыдущая страница</a></li><#else></#if>
+                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/${page+1}">Следующая страница</a></li>
                         </ul>
                     </nav>
                 </div>

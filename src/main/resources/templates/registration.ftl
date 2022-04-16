@@ -32,8 +32,8 @@
                 <input type="password" class="form-control" name="pass" required="true">
             </div>
             <div class="mb-3 text-center">
-                <label for="email" class="form-label">email</label>
-                <input type="email" class="form-control" name="email" required="true">
+                <label for="mail" class="form-label">email</label>
+                <input type="email" class="form-control" name="mail" required="true">
 
             </div>
             <div class="col text-center">

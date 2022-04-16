@@ -1,5 +1,5 @@
 <#macro nicehat>
-    <div class="row">
+    <div class="row text-center">
         <div class="col text-center ">
             <h1> КРАСИВАЯ ШАПКА С НАЗВАНИЕМ </h1>
         </div>
@@ -19,24 +19,37 @@
 <#macro themes rows>
     <table>
         <#list rows as row>
-            <div class="row">
-                <p> ${row.section}</p>
+        <div class="row">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 >${row.theme} </h3>
+                        <h5 >автор: ${row.themeCreator}</h5>
+                        <p class="card-text"></p>
+                        <br>
+                        ${row.text}
+                        <br><br>
+                        <div class="d-flex">
+                            <small class="text-muted">Опубликовано ${row.published}</small>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Проголосовать</button>
+                                <p>рейтинг ${row.score}</p>
+                            </div>
+                            <div class="col text-center">
+                                <div class="row">
+                                    <a href="/main/discuss/${row.theme}">Комментарии</a>
+                                </div>
+                                <div class="row">
+                                    <#if comments??><p>комментариев сейчас ${comments}</p><#else><p>Ещё никто не комментировал</p></#if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <p> ${row.themeCreator}</p>
-            </div>
-            <div class="row">
-                <p> ${row.theme}</p>
-            </div>
-            <div class="row">
-                <p> ${row.text}</p>
-            </div>
-            <div class="row">
-                <p> ${row.published}</p>
-            </div>
-            <div class="row">
-                <p> ${row.score}</p>
-            </div>
+            <br><br>
         </#list>
     </table>
 </#macro>

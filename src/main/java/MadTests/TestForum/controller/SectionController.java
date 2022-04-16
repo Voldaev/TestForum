@@ -34,7 +34,7 @@ public class SectionController extends BaseController{
             model.addAttribute("status","Внимание! email не подтвержден, активность ограничена");
         }
         model.addAttribute("content", contentService.getSectionContent(section, page));
-
+        model.addAttribute("page",page);
         return "section";
     }
 }
