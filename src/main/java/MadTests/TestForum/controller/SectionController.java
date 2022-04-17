@@ -37,4 +37,24 @@ public class SectionController extends BaseController{
         model.addAttribute("page",page);
         return "section";
     }
+
+    @GetMapping("/main/discuss/{theme}")
+    public String theme(Model model,
+                          @PathVariable String theme)
+    {
+        UserEditRegDTO profile = userService.getProfile(getSessionUserId());
+        if (profile.getAvatar() == null) {
+            model.addAttribute("useravatar","/static/img/default.jpg");
+        } else {
+            model.addAttribute("useravatar", "/main/profile/avatar/" + profile.getAvatar());
+        }
+        if (userService.getStatus(getSessionUserId()).equals(Status.UNCHECKED)) {
+            model.addAttribute("status","Внимание! email не подтвержден, активность ограничена");
+        }
+
+        model.addAttribute("theme", contentService.getTheme(theme));
+        model.addAttribute("thistheme", theme);
+        model.addAttribute("comms", contentService.getComms(theme));
+        return "theme";
+    }
 }

@@ -42,7 +42,7 @@
                                     <a href="/main/discuss/${row.theme}">Комментарии</a>
                                 </div>
                                 <div class="row">
-                                    <#if comments??><p>комментариев сейчас ${comments}</p><#else><p>Ещё никто не комментировал</p></#if>
+                                    <p>Комментариев сейчас ${row.comms}</p>
                                 </div>
                             </div>
                         </div>
@@ -51,5 +51,34 @@
             </div>
             <br><br>
         </#list>
+    </table>
+</#macro>
+
+<#macro comments rows>
+    <table>
+        <#list rows as row>
+        <div class="row">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 >комментарий от пользователя: ${row.user}</h5>
+                        <p class="card-text"></p>
+                        <br>
+                        ${row.text}
+                        <br><br>
+                        <div class="d-flex">
+                            <small class="text-muted">Опубликовано ${row.published}</small>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Проголосовать</button>
+                                <p>рейтинг ${row.score}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            </#list>
     </table>
 </#macro>

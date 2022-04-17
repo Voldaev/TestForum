@@ -11,12 +11,10 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode
 @Builder
-public class ThemeDTO {
-    private String section;
-    private String themeCreator;
+public class CommentDTO {
     private String theme;
+    private String user;
     private String text;
     private LocalDateTime published;
     private int score;
-    private int comms;
 }

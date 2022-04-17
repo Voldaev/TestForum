@@ -18,12 +18,7 @@
     <body>
         <div class="container">
             <@ui.nicehat></@ui.nicehat>
-            <div class="row">
-                <div class="col text-center">
-                    <h2 >Добро пожаловать в раздел ${sectionname}!</h2>
-                    <#if status??><h4>${status}</h4><#else></#if>
-                </div>
-            </div>
+            <#if status??><h4>${status}</h4><#else></#if>
         </div>
         <div class="container">
             <div class="row">
@@ -36,41 +31,27 @@
                     </div>
                 </div>
                 <div class="col text-center">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <#if (page>1)><li class="page-item"><a class="page-link" href="/main/${sectionname}/${page-1}">Предыдущая страница</a></li><#else></#if>
-                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/${page+1}">Следующая страница</a></li>
-                        </ul>
-                    </nav>
+                    <@ui.themes rows=theme/>
                     <div class="row">
-                        <button class="buttonNewTheme" type="button" onclick="showSet()" >Добавить новую тему</button>
-                        <script>
-                            function showSet() {
-                                    $(".newThemeSet").show();
-                                    $(".buttonNewTheme").hide();
-                            }
-                        </script>
-                        <div class="newThemeSet">
+                        <button class="buttonNewTheme" type="button" onclick="addComment()" >Добавить комментарий</button>
                             <fieldset>
-                                <legend>Новая тема</legend>
-                                <form id="theme-form">
+                                <form id="comm-form">
+                                    <br/>
                                     <label>
-                                        Название темы
+                                        текст комментария
                                         <input name="sign" type="text" required="required" />
                                     </label>
-                                    <br/><br/>
+                                    <br/>
                                     <label>
-                                        Содержание
-                                        <input name="pass" type="text" required="required" />
+                                        <input name="pass" type="text" required="required" hidden/>
                                     </label>
-                                    <br/><br/>
-                                    <button type="button" onclick="addTheme()">Опубликовать</button>
+                                    <br/>
                                 </form>
                                 <script>
-                                    function addTheme() {
-                                        let formData = Object.fromEntries(new FormData($('#theme-form')[0]).entries())
+                                    function addComment() {
+                                        let formData = Object.fromEntries(new FormData($('#comm-form')[0]).entries())
                                         $.ajax({
-                                            url: '/main/${sectionname}/create',
+                                            url: '/main/${thistheme}/comment',
                                             type: 'POST',
                                             contentType: 'application/json',
                                             dataType: 'json',
@@ -92,13 +73,7 @@
                             </fieldset>
                         </div>
                     </div>
-                    <@ui.themes rows=content![]/>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <#if (page>1)><li class="page-item"><a class="page-link" href="/main/${sectionname}/${page-1}">Предыдущая страница</a></li><#else></#if>
-                            <li class="page-item"><a class="page-link" href="/main/${sectionname}/${page+1}">Следующая страница</a></li>
-                        </ul>
-                    </nav>
+                    <@ui.comments rows=comms/>
                 </div>
             </div>
         </div>
