@@ -33,12 +33,18 @@
                 <div class="col text-center">
                     <@ui.themes rows=theme/>
                     <div class="row">
-                        <button class="buttonNewTheme" type="button" onclick="addComment()" >Добавить комментарий</button>
+                        <script>
+                            function showSet(id){
+                                let elem = document.getElementById(id);
+                                let state = elem.style.display;
+                                if (state ==='') elem.style.display='none';
+                                else elem.style.display='';
+                            }
+                        </script>
+                        <button class="buttonNewTheme" type="button" onclick="showSet('comm-form')" >Добавить комментарий</button>
                             <fieldset>
-                                <form id="comm-form">
-                                    <br/>
+                                <form id="comm-form" style="display: none">
                                     <label>
-
                                         <input name="desc" type="text" hidden/>
                                     </label>
                                     <br/>
@@ -47,6 +53,7 @@
                                         <input name="text" type="text" required="required" />
                                     </label>
                                     <br/>
+                                    <button class="buttonNewTheme" type="button" onclick="addComment()" >Опубликовать</button>
                                 </form>
                                 <script>
                                     function addComment() {

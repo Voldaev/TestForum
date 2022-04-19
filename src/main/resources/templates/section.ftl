@@ -43,14 +43,17 @@
                         </ul>
                     </nav>
                     <div class="row">
-                        <button class="buttonNewTheme" type="button" onclick="showSet()" >Добавить новую тему</button>
+
+                        <button id="button1" type="button" onclick="showSet('theme-fld')"  >Добавить новую тему</button>
                         <script>
-                            function showSet() {
-                                    $(".newThemeSet").show();
-                                    $(".buttonNewTheme").hide();
+                                function showSet(id){
+                                let elem = document.getElementById(id);
+                                let state = elem.style.display;
+                                if (state ==='') elem.style.display='none';
+                                else elem.style.display='';
                             }
                         </script>
-                        <div class="newThemeSet">
+                        <div id="theme-fld" style="display: none">
                             <fieldset>
                                 <legend>Новая тема</legend>
                                 <form id="theme-form">
