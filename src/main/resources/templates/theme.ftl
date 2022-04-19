@@ -38,12 +38,13 @@
                                 <form id="comm-form">
                                     <br/>
                                     <label>
-                                        текст комментария
-                                        <input name="sign" type="text" required="required" />
+
+                                        <input name="desc" type="text" hidden/>
                                     </label>
                                     <br/>
                                     <label>
-                                        <input name="pass" type="text" required="required" hidden/>
+                                        текст комментария
+                                        <input name="text" type="text" required="required" />
                                     </label>
                                     <br/>
                                 </form>
@@ -74,8 +75,27 @@
                         </div>
                     </div>
                     <@ui.comments rows=comms/>
+                <script>
+                    function vote(kkk) {
+                        $.ajax({
+                            url: kkk,
+                            type: 'POST',
+                            cache: false,
+                            async: false,
+                            success: function(resp) {
+                                console.log(resp)
+                                if (resp.success) {
+                                    alert(resp.message);
+                                    location.reload();
+                                } else {
+                                    alert(resp.message)
+                                }
+
+                            }
+                        });
+                    }
+                </script>
                 </div>
             </div>
-        </div>
     </body>
 </html>

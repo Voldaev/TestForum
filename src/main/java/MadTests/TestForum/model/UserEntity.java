@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -47,4 +48,10 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "commCreator")
     private List<CommentEntity> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<VoteThemeEntity> themeVotes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<VoteCommEntity> commVotes;
 }

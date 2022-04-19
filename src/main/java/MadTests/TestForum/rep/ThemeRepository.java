@@ -1,14 +1,9 @@
 package MadTests.TestForum.rep;
 
-import MadTests.TestForum.dto.ThemeDTO;
-import MadTests.TestForum.model.SectionEntity;
 import MadTests.TestForum.model.ThemeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
-import java.util.Optional;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public interface ThemeRepository extends JpaRepository<ThemeEntity, Long> {
     ThemeEntity getByTheme(String theme);
 }

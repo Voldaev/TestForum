@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Builder
 public class CommentDTO {
+    private Long id;
     private String theme;
     private String user;
     private String text;

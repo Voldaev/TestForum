@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Builder
 public class ThemeDTO {
+    private Long id;
     private String section;
     private String themeCreator;
     private String theme;

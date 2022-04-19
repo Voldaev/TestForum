@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +34,6 @@ public class CommentEntity {
     @Column(name = "published")
     private LocalDateTime published;
 
-    @Column(name = "score")
-    private int score;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comm")
+    private List<VoteCommEntity> votes;
 }

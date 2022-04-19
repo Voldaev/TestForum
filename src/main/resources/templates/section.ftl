@@ -56,12 +56,12 @@
                                 <form id="theme-form">
                                     <label>
                                         Название темы
-                                        <input name="sign" type="text" required="required" />
+                                        <input name="desc" type="text" required="required" />
                                     </label>
                                     <br/><br/>
                                     <label>
                                         Содержание
-                                        <input name="pass" type="text" required="required" />
+                                        <input name="text" type="text" required="required" />
                                     </label>
                                     <br/><br/>
                                     <button type="button" onclick="addTheme()">Опубликовать</button>
@@ -93,6 +93,26 @@
                         </div>
                     </div>
                     <@ui.themes rows=content![]/>
+                    <script>
+                        function vote(kkk) {
+                            $.ajax({
+                                url: kkk,
+                                type: 'POST',
+                                cache: false,
+                                async: false,
+                                success: function(resp) {
+                                    console.log(resp)
+                                    if (resp.success) {
+                                        alert(resp.message);
+                                        location.reload();
+                                    } else {
+                                        alert(resp.message)
+                                    }
+
+                                }
+                            });
+                        }
+                    </script>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
                             <#if (page>1)><li class="page-item"><a class="page-link" href="/main/${sectionname}/${page-1}">Предыдущая страница</a></li><#else></#if>

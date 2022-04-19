@@ -34,7 +34,8 @@
                         </div>
                         <div class="row">
                             <div class="col-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Проголосовать</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="vote('/main/vote/theme/${row.id}')" >Проголосовать</button>
+
                                 <p>рейтинг ${row.score}</p>
                             </div>
                             <div class="col text-center">
@@ -71,7 +72,7 @@
                         </div>
                         <div class="row">
                             <div class="col-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Проголосовать</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="vote('/main/vote/comment/${row.id}')" >Проголосовать</button>
                                 <p>рейтинг ${row.score}</p>
                             </div>
                         </div>

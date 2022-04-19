@@ -4,13 +4,8 @@ import MadTests.TestForum.dto.CommentDTO;
 import MadTests.TestForum.dto.MessageDTO;
 import MadTests.TestForum.dto.ThemeDTO;
 import MadTests.TestForum.mapper.EntityDtoMapper;
-import MadTests.TestForum.model.CommentEntity;
-import MadTests.TestForum.model.SectionEntity;
-import MadTests.TestForum.model.ThemeEntity;
-import MadTests.TestForum.rep.CommentRepository;
-import MadTests.TestForum.rep.SectionRepository;
-import MadTests.TestForum.rep.ThemeRepository;
-import MadTests.TestForum.rep.UserRepository;
+import MadTests.TestForum.model.*;
+import MadTests.TestForum.rep.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +32,12 @@ public class ContentService {
     private CommentRepository commentRepository;
 
     @Autowired
+    private VoteCommRepository voteCommRepository;
+
+    @Autowired
+    private VoteThemeRepository voteThemeRepository;
+
+    @Autowired
     EntityDtoMapper entityDtoMapper;
 
     public List<String> getSectionNames() {
@@ -53,6 +54,7 @@ public class ContentService {
         sectionEntity.getThemes().forEach(themeEntity -> {
             ThemeDTO themeDTO = entityDtoMapper.toThemeDTO(themeEntity);
             themeDTO.setComms(themeEntity.getComments().size());
+            themeDTO.setScore(themeEntity.getVotes().size());
             list.add(themeDTO);
         });
         for (int i = 1; i < (page-1)*themesPerPage;i++){
@@ -67,6 +69,7 @@ public class ContentService {
         ArrayList<ThemeDTO> list = new ArrayList<>();
         ThemeDTO themeDTO = entityDtoMapper.toThemeDTO(themeRepository.getByTheme(theme));
         themeDTO.setComms(themeRepository.getByTheme(theme).getComments().size());
+        themeDTO.setScore(themeRepository.getByTheme(theme).getVotes().size());
         list.add(themeDTO);
         return list;
     }
@@ -74,7 +77,11 @@ public class ContentService {
     public List<CommentDTO> getComms(String theme) {
         ThemeEntity entity = themeRepository.getByTheme(theme);
         ArrayList<CommentDTO> list = new ArrayList<>();
-        entity.getComments().forEach(comment -> list.add(entityDtoMapper.toCommentDTO(comment)));
+        entity.getComments().forEach(comment -> {
+            CommentDTO commentDTO = entityDtoMapper.toCommentDTO(comment);
+            commentDTO.setScore(comment.getVotes().size());
+            list.add(commentDTO);
+        });
         return list;
     }
 
@@ -86,7 +93,6 @@ public class ContentService {
         entity.setSection(sectionRepository.getById(section));
         entity.setComments(new ArrayList<>());
         entity.setPublished(LocalDateTime.now());
-        entity.setScore(0);
         themeRepository.save(entity);
         return MessageDTO.succeed("Тема успешно создана");
     }
@@ -97,8 +103,27 @@ public class ContentService {
         entity.setText(sign);
         entity.setCommCreator(userRepository.getById(sessionUserId));
         entity.setPublished(LocalDateTime.now());
-        entity.setScore(0);
         commentRepository.save(entity);
         return MessageDTO.succeed("Комментарий добавлен");
+    }
+
+    public MessageDTO voteTheme(Long themeId, Long sessionUserId) {
+        VoteThemeEntity entity = new VoteThemeEntity();
+        entity.setUser(userRepository.getById(sessionUserId));
+        entity.setTheme(themeRepository.getById(themeId));
+        if (voteThemeRepository.check(themeId,sessionUserId)!=null)
+            return MessageDTO.failed("Повторное голосование не учитывается");
+        voteThemeRepository.save(entity);
+        return MessageDTO.succeed("Голос учтён");
+    }
+
+    public MessageDTO voteComm(Long commId, Long sessionUserId) {
+        VoteCommEntity entity = new VoteCommEntity();
+        entity.setUser(userRepository.getById(sessionUserId));
+        entity.setComm(commentRepository.getById(commId));
+        if (voteCommRepository.check(commId, sessionUserId)!=null)
+            return MessageDTO.failed("Повторное голосование не учитывается");
+        voteCommRepository.save(entity);
+        return MessageDTO.succeed("Голос учтён");
     }
 }

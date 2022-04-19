@@ -37,10 +37,10 @@ public class ThemeEntity {
     @Column(name = "published")
     private LocalDateTime published;
 
-    @Column(name = "score")
-    private int score;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme")
     private List<CommentEntity> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme")
+    private List<VoteThemeEntity> votes;
 
 }
